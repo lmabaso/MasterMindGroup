@@ -61,14 +61,13 @@ void testMemccpy(void)
 	char tstr[50];
 	char var[] = "liberty";
 
-	memccpy(str, var, 't', 7);
-	ft_memccpy(tstr, var,'t', 7);
-
 	printf("Memccpy\t");
-	if (memcmp(str, tstr, 7) == 0)
+	if (memcmp(memccpy(str, var, 't', 7), ft_memccpy(tstr, var,'t', 7), 7) == 0)
 		printf("[Pass]\n");
 	else
-		printf("[Failed]\n");
+		printf("[Fail]\n");
+	printf("%s\n", (char *)memccpy(str, var, 't', 7));
+	printf("%s\n", (char *)ft_memccpy(tstr, var, 't', 7));
 }
 
 int		main(void)

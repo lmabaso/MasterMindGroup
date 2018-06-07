@@ -4,17 +4,17 @@ void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
 	unsigned char *d;
 	unsigned char *s;
-	unsigned char toStop;
+	size_t i;
 
 	d = (unsigned char *)dst;
 	s = (unsigned char *)src;
-	toStop = (unsigned char)c;
-	while (n > 0)
+	i = 0;
+	while (i < n)
 	{
-		*d++ = *s++;
-		n--;
-		if (*s == toStop)
-			break ;
+		d[i] = s[i];
+		if (s[i] == c)
+			return (s + i + 1);
+		i++;
 	}
-	return (dst);
+	return (NULL);
 }
