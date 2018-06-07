@@ -9,10 +9,12 @@ void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 	d = (unsigned char *)dst;
 	s = (unsigned char *)src;
 	toStop = (unsigned char)c;
-	while (n > 0 && *s != toStop)
+	while (n > 0)
 	{
 		*d++ = *s++;
 		n--;
+		if (*s == toStop)
+			break ;
 	}
 	return (dst);
 }
