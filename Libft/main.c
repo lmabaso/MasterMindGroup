@@ -39,10 +39,27 @@ void testBzero(void)
 		printf("[Failed]\n");
 }
 
+void testMemcpy(void)
+{
+	char str[50];
+	char tstr[50];
+	char var[] = "liberty";
+
+	memcpy(str, var, 7);
+	ft_memcpy(tstr, var, 7);
+
+	printf("Memcpy\t");
+	if (memcmp(str, tstr, 7) == 0)
+		printf("[Pass]\n");
+	else
+		printf("[Failed]\n");
+}
+
 int		main(void)
 {
 	
-	//testMemset();
+	testMemset();
 	testBzero();
+	testMemcpy();
 	return(0);
 }

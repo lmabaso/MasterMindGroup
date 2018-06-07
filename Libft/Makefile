@@ -1,6 +1,6 @@
 NAME = libft.a
 
-SRC = ft_memset.c ft_bzero.c
+SRC = ft_memset.c ft_bzero.c ft_memcpy.c
 
 OBJ = *.o
 
