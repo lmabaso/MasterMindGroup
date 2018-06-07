@@ -3,17 +3,15 @@
 void	*ft_memset(void *s, int c, size_t n)
 {
 	unsigned char toCopy;
-	size_t index;
 	char *tmp;
 
 	toCopy = (unsigned char)c;
-	index = 0;
 	tmp = (char *)s;
-	while (index < n)
+	while (n > 0)
 	{
 		*tmp = toCopy;
 		tmp++;
-		index++;
+		n--;
 	}
 	return (s);
 }
