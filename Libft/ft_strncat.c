@@ -2,19 +2,13 @@
 
 char *ft_strncat(char *dest, const char *src, size_t n)
 {
-	size_t index;
-	size_t len;
+	size_t dlen;
 
-	index = 0;
-	len = 0;
-	while (dest[len])
-		len++;
-	while (n)
-	{
-		dest[len + index] = src[index];
-		index++;
-		n--;
-	}
-	dest[len + index] = '\0';
-	return (dest);
+	dlen = ft_strlen(dest) + n;
+	while (*dest)
+		dest++;
+	while (*src && n--)
+		*dest++ = *src++;
+	*dest = '\0';
+	return (dest - dlen);
 }
