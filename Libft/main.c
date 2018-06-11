@@ -66,8 +66,40 @@ void testMemccpy(void)
 		printf("[Pass]\n");
 	else
 		printf("[Fail]\n");
-	printf("%s\n", (char *)memccpy(str, var, 't', 7));
-	printf("%s\n", (char *)ft_memccpy(tstr, var, 't', 7));
+	// printf("%s\n", (char *)memccpy(str, var, 't', 7));
+	// printf("%s\n", (char *)ft_memccpy(tstr, var, 't', 7));
+}
+
+void	testStrncat(void)
+{
+	char str[] = "This is dest string";
+	char tstr[] = "This is dest string";
+	char var[] = "liberty for src string";
+
+	printf("strncat\t");
+	if (strcmp(strncat(str, var, 7), ft_strncat(tstr, var, 7)) == 0)
+		printf("[Pass]\n");
+	else
+		printf("[Fail]\n");
+	// printf("Ours %s\n", tstr);
+	// printf("System %s\n", str);
+
+}
+
+void	testStrlcat(void)
+{
+	char str[] = "This is dest string";
+	char tstr[] = "This is dest string";
+	char var[] = "liberty for src string";
+
+	printf("strlcat\t");
+	if (strlcat(str, var, 7) == ft_strlcat(tstr, var, 7))
+		printf("[Pass]\n");
+	else
+		printf("[Fail]\n");
+	printf("Ours %s \n",str/*, strlcat(str, var, 7)*/);
+	printf("System %s \n",tstr/*, ft_strlcat(tstr, var, 7)*/);
+
 }
 
 int		main(void)
@@ -77,5 +109,7 @@ int		main(void)
 	testBzero();
 	testMemcpy();
 	testMemccpy();
+	testStrncat();
+	testStrlcat();
 	return(0);
 }
