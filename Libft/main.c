@@ -93,7 +93,7 @@ void	testStrcat()
 	printf("ft_strcat: %s\t%zu\n", ft_strcat(s3, s4), len2);
 }
 
-void	testStrlcat()
+void	testStrlcat(int n)
 {
 	char s1[50] = "BMW";
 	char s2[] = "Volvo";	
@@ -103,22 +103,24 @@ void	testStrlcat()
 	size_t len;
 	size_t len2;
 	
-	len = strlcat(s1, s2, 1);
+	len = strlcat(s1, s2, n);
 	printf("strlcat:\n");
 	printf("s1 = %s\t%zu\n", s1, len);
-	len2 = ft_strlcat(s3, s4, 1);
+	len2 = ft_strlcat(s3, s4, n);
 	printf("ft_strlcat:\n");
 	printf("s3 = %s\t%zu\n", s3, len2);
 }
 
-int		main(void)
+int		main(int c, char ** v)
 {
+	if (c == 1)
+		return (1);
 	
 	/*testMemset();
 	testBzero();
 	testMemcpy();
 	testMemccpy();*/
 	//testStrcat();
-	testStrlcat();
+	testStrlcat(atoi(v[1]));
 	return(0);
 }
