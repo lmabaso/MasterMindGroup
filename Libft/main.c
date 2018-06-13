@@ -103,10 +103,10 @@ void	testStrlcat()
 	size_t len;
 	size_t len2;
 	
-	len = strlcat(s1, s2, 3);
+	len = strlcat(s1, s2, 1);
 	printf("strlcat:\n");
 	printf("s1 = %s\t%zu\n", s1, len);
-	len2 = ft_strlcat(s3, s4, 3);
+	len2 = ft_strlcat(s3, s4, 1);
 	printf("ft_strlcat:\n");
 	printf("s3 = %s\t%zu\n", s3, len2);
 }

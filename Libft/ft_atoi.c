@@ -1,10 +1,9 @@
 #include "libft.h"
-#include "ctype.h"
 
 int	ft_atoi(const char *str)
 {
 	int sign;
-	long num;
+	long long num;
 
 	sign = 1;
 	num = 0;
@@ -15,7 +14,7 @@ int	ft_atoi(const char *str)
 		sign = -1;
 		str++;
 	}
-	while (isdigit(*str))
+	while (ft_isdigit(*str))
 		num = num * 10 + (*str++ - '0');
 	return ((int)num * sign);
 }
