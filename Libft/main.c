@@ -95,32 +95,49 @@ void	testStrcat()
 
 void	testStrlcat(int n)
 {
-	char s1[50] = "BMW";
-	char s2[] = "Volvo";	
+	//char s1[50] = "BMW";
+	//char s2[] = "Volvo";	
 	char s3[50] = "BMW";
 	char s4[] = "Volvo";
 	
-	size_t len;
+	//size_t len;
 	size_t len2;
 	
-	len = strlcat(s1, s2, n);
-	printf("strlcat:\n");
-	printf("s1 = %s\t%zu\n", s1, len);
+	//len = strlcat(s1, s2, n);
+	//printf("strlcat:\n");
+	//printf("s1 = %s\t%zu\n", s1, len);
 	len2 = ft_strlcat(s3, s4, n);
 	printf("ft_strlcat:\n");
 	printf("s3 = %s\t%zu\n", s3, len2);
 }
 
+void	testStrsplit(void)
+{
+	char	*str = "JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC";
+	char	**array;
+	int i;
+
+	array = ft_strsplit(str, 'R');
+	printf("ft_strsplit\n");
+	i = 0;
+	while (array[i])
+	{
+		printf("%s\n", array[i]);
+		i++;
+	}
+}
+
 int		main(int c, char ** v)
 {
 	if (c == 1)
-		return (1);
-	
+		;
+
 	/*testMemset();
 	testBzero();
 	testMemcpy();
 	testMemccpy();*/
 	//testStrcat();
-	testStrlcat(atoi(v[1]));
+	//testStrlcat(atoi(v[1]));
+	testStrsplit();
 	return(0);
 }
