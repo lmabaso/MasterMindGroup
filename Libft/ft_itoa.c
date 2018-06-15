@@ -18,15 +18,15 @@ int		ft_leni(int n)
 char	*ft_itoa(int n)
 {
 	char *num;
-	size_t end;
-	int i;
+	int end;
+	int sign;
 
 	end = ft_leni(n);
 	i = 0;
 	if (n < 0)
 	{
 		n*=-1;
-		i = 1;
+		sign = 1;
 		end++;
 		}
 	if (!(num = ft_strnew(end + 1)))
@@ -36,6 +36,6 @@ char	*ft_itoa(int n)
 		num[end] = (n % 10) + 48;
 		n = n / 10;
 	}
-	num[0] = (i == 1) ? '-' : num[0];
+	num[0] = (sign == 1) ? '-' : num[0];
 	return (num);
 }
