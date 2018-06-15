@@ -113,12 +113,11 @@ void	testStrlcat(int n)
 
 void	testStrsplit(void)
 {
-	char	*str = "JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC";
+	char	*str = ",,,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,,,,,SEP,,,OCT,NOV,DEC,,,,,";
 	char	**array;
 	int i;
 
-	array = ft_strsplit(str, 'R');
-	printf("ft_strsplit\n");
+	array = ft_strsplit(str, ',');
 	i = 0;
 	while (array[i])
 	{
@@ -127,17 +126,22 @@ void	testStrsplit(void)
 	}
 }
 
+void	testItoa(void)
+{
+	printf("%s\n", ft_itoa (12345678));
+}
+
 int		main(int c, char ** v)
 {
 	if (c == 1)
 		;
-
 	/*testMemset();
 	testBzero();
 	testMemcpy();
 	testMemccpy();*/
 	//testStrcat();
 	//testStrlcat(atoi(v[1]));
-	testStrsplit();
+	//testStrsplit();
+	testItoa();
 	return(0);
 }
