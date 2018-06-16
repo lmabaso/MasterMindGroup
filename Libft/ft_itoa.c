@@ -13,23 +13,25 @@ int		ft_leni(int n)
 	return (i);
 }
 
-#include <stdio.h>
-
 char	*ft_itoa(int n)
 {
 	char *num;
 	int end;
 	int sign;
 
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	if (n == 0)
+		return (ft_strdup("0"));
 	end = ft_leni(n);
-	i = 0;
+	sign = 0;
 	if (n < 0)
 	{
 		n*=-1;
 		sign = 1;
 		end++;
-		}
-	if (!(num = ft_strnew(end + 1)))
+	}
+	if (!(num = ft_strnew(end)))
 		return (NULL);
 	while (end--)
 	{

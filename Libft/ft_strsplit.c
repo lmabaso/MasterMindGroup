@@ -7,7 +7,7 @@ int		ft_len(char const *s, char c)
 	count = 0;
 	while (s[count])
 	{
-		if (s[count] == c && s[count]!= '\0')
+		if (s[count] == c)
 			return (count);
 		count++;
 	}
@@ -24,10 +24,10 @@ int		ft_count(char const *s, char c)
 	while (*s)
 	{
 		inSub = (inSub && *s == c) ? 0 : inSub;
-		if (!inSub && *s != c)
+		if (!inSub && *s !=c)
 		{
-			inSub = 1;
 			count++;
+			inSub = 1;
 		}
 		s++;
 	}
@@ -38,25 +38,23 @@ char	**ft_strsplit(char const *s, char c)
 {
 	char	**str;
 	int		elements;
-	int		len;
 	char	**ptr;
 
+	if (!s)
+		return (NULL);
 	elements = ft_count(s, c);
-	len = 0;
-	str = NULL;
-	if ((str = (char **)malloc(sizeof(char *) * (elements + 1))))
+	if (!(str = (char **)malloc(sizeof(char *) * (elements))))
+		return (NULL);
+	ptr = str;
+	while (elements--)
 	{
-		ptr = str;
-		while (elements--)
-		{
-			while (*s == c)
-				s++;
-			len = ft_len(s, c) + 1;
-			*str = ft_strsub(s, 0, len - 1);
-			s = s + len;
-			str++;
-		}
-		str = '\0';
+		while (*s == c && *s)
+			s++;
+		*str++ = ft_strsub(s, 0, ft_len(s, c));
+		if (!str)
+			return (NULL);
+		s = s + ft_len(s, c);
 	}
+	*str = NULL;
 	return (ptr);
 }

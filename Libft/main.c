@@ -113,7 +113,7 @@ void	testStrlcat(int n)
 
 void	testStrsplit(void)
 {
-	char	*str = ",,,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,,,,,SEP,,,OCT,NOV,DEC,,,,,";
+	char	*str = ",,,JAN,,FEB,MAR,APR,MAY,JUN,JUL,AUG,,,,,SEP,,,OCT,NOV,DEC,,,,,";
 	char	**array;
 	int i;
 
@@ -141,7 +141,7 @@ int		main(int c, char ** v)
 	testMemccpy();*/
 	//testStrcat();
 	//testStrlcat(atoi(v[1]));
-	//testStrsplit();
-	testItoa();
+	testStrsplit();
+	//testItoa();
 	return(0);
 }
