@@ -2,14 +2,14 @@
 
 void	*ft_memset(void *s, int c, size_t n)
 {
-	unsigned char toCopy;
-	char *tmp;
+	unsigned char	tocopy;
+	char			*tmp;
 
-	toCopy = (unsigned char)c;
+	tocopy = (unsigned char)c;
 	tmp = (char *)s;
 	while (n > 0)
 	{
-		*tmp = toCopy;
+		*tmp = tocopy;
 		tmp++;
 		n--;
 	}
