@@ -34,6 +34,7 @@ int		ft_count(char const *s, char c)
 	return (count);
 }
 
+#include <stdio.h>
 char	**ft_strsplit(char const *s, char c)
 {
 	char	**str;
@@ -50,9 +51,8 @@ char	**ft_strsplit(char const *s, char c)
 	{
 		while (*s == c && *s)
 			s++;
-		*str++ = ft_strsub(s, 0, ft_len(s, c));
-		if (!str)
-			return (NULL);
+		*str = ft_strsub(s, 0, ft_len(s, c));
+		str++;
 		s = s + ft_len(s, c);
 	}
 	*str = NULL;

@@ -131,6 +131,11 @@ void	testItoa(void)
 	printf("%s\n", ft_itoa (12345678));
 }
 
+void	testAtoi(void)
+{
+	printf("%d\n", ft_atoi("+-47"));
+}
+
 int		main(int c, char ** v)
 {
 	if (c == 1)
@@ -143,5 +148,6 @@ int		main(int c, char ** v)
 	//testStrlcat(atoi(v[1]));
 	testStrsplit();
 	//testItoa();
+	//testAtoi();
 	return(0);
 }
