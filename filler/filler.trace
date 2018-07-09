@@ -1,5 +1,3 @@
-seed = 690
-
-resources/players/abanlin.filler won
-Score:
-2AGAINST316
+seed = 6288
+O: timedout
+./lmabaso.filler: Segfault at 0

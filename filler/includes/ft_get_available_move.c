@@ -1,6 +1,6 @@
 #include "filler.h"
 
-t_list	*ft_get_available_move(t_spot **board, t_obj input)
+t_list	*ft_get_available_move(t_obj input)
 {
 	int 	i;
 	int 	j;
@@ -17,7 +17,7 @@ t_list	*ft_get_available_move(t_spot **board, t_obj input)
 		j = 0;
 		while (j < input.bx)
 		{
-			if (board[i][j].state == input.mypiece)
+			if (input.board[i][j] == input.mypiece)
 			{
 				tmp->y = i;
 				tmp->x = j;

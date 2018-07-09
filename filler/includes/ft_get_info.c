@@ -40,4 +40,9 @@ void	ft_get_info(t_obj *input)
 		if (input->j == input->py)
 			input->isdone = 1;
 	}
+	if (ft_strncmp(input->line, "Player with ", 12) == 0)
+	{
+		if (input->line[13] == input->mypiece)
+			input->gameover = 1;
+	}
 }

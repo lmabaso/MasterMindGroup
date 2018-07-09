@@ -1,25 +1,23 @@
 #include "filler.h"
 
-t_list		*ft_get_physical_sqr(t_obj input)
+t_list	*ft_get_opponent_pieces(t_obj input)
 {
 	int 	i;
 	int 	j;
 	t_co	*tmp;
 	t_list	*head;
-	char	**piece;
 
 	head = NULL;
 	i = 0;
 	tmp = NULL;
-	piece = input.piece;
 	if (!(tmp = (t_co *)malloc(sizeof(t_co))))
 		return (NULL);
-	while (i < input.py)
+	while (i < input.by)
 	{
 		j = 0;
-		while (j < input.px)
+		while (j < input.bx)
 		{
-			if (piece[i][j] == '*')
+			if (input.board[i][j] == input.oppiece || input.board[i][j] == input.oppiece + 32)
 			{
 				tmp->y = i;
 				tmp->x = j;

@@ -12,6 +12,8 @@ typedef struct	object
 	int 		i;
 	int 		j;
 	int			isdone;
+	int			ko;
+	int			gameover;
 	char 		*player;
 	char		*line;
 	char		mypiece;
@@ -39,13 +41,16 @@ typedef struct	spot
 	t_list		*neighbours;
 	char		state;
 	int 		available;
+	int			score;
 }				t_spot;
 
 t_spot		**ft_makeboard(t_obj input);
 t_list		*ft_get_neighbours(int c, int r, t_obj input);
 void		ft_get_info(t_obj *input);
-t_list		*ft_get_available_move(t_spot **board, t_obj input);
+t_list		*ft_get_available_move(t_obj input);
 t_list		*ft_get_physical_sqr(t_obj input);
 void		ft_init_struct(t_obj *input);
 void		ft_toplace(t_list *board, t_list *piece);
+t_list		*ft_get_opponent_pieces(t_obj input);
+t_co		*ft_lst_to_arr(t_list *head, int i);
 #endif

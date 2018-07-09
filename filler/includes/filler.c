@@ -1,6 +1,4 @@
 #include "filler.h"
-#include <fcntl.h>
-
 
 void	ft_lstprint_fd(t_list *head, int fd)
 {
@@ -44,30 +42,6 @@ t_co	ft_correct_point_b(t_co board, t_co piece)
 	return (correct);
 }
 
-// int 	ft_overlap(t_obj input, t_co board, t_co piece)
-// {
-	
-// }
-
-// int 	ft_ispossible(t_obj input, t_co board, t_co piece, t_co *whole_piece)
-// {
-// 	int i;
-// 	int x;
-
-// 	i = 0;
-// 	x = 0;
-// 	while (whole_piece[i])
-// 		i++;
-// 	while (x < i)
-// 	{
-
-// 	}
-// }
-
-// t_co	ft_find_posible_move(t_obj input, t_co *board, t_co *piece)
-// {
-	
-// }
 void	ft_play(t_co toplace)
 {
 	ft_putnbr(toplace.y);
@@ -90,7 +64,3 @@ void	ft_toplace(t_list *board, t_list *piece)
 
 	// return (toplace);
 }
-
-
-
-
