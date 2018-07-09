@@ -1,4 +1,5 @@
 #include "filler.h"
+#include <math.h>
 
 int 	ft_is_available(t_list *neighbours, t_obj input, int y, int x)
 {
@@ -115,6 +116,13 @@ t_co		ft_find_close(int y, int x, t_obj input)
 	return (found);
 }
 
+double getDistance(t_co a, t_co b)
+{
+    double distance;
+    distance = sqrt((a.x - b.x) * (a.x - b.x) + (a.y-b.y) *(a.y-b.y));
+    return (distance);
+}
+
 t_spot		**ft_makeboard(t_obj input)
 {
 	t_spot	**board;
@@ -152,8 +160,7 @@ t_spot		**ft_makeboard(t_obj input)
 		i++;
 	}
 	i = 0;
-	int a;
-	int b;
+	t_co tmp1;
 	while (i < input.by)
 	{
 		j = 0;
@@ -161,10 +168,10 @@ t_spot		**ft_makeboard(t_obj input)
 		{
 			if (board[i][j].score == 0)
 			{
-				tmp = ft_find_close(i, j, input);
-				a = -(tmp.y - i * tmp.y - i);
-				b = -(tmp.x - j * tmp.x - j);
-				board[i][j].score = a + b;
+				tmp1.x = j;
+				tmp1.y = i;
+ 				tmp = ft_find_close(i, j, input);
+				board[i][j].score = (int)getDistance(tmp, tmp1);
 			}
 			j++;
 		}

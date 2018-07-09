@@ -1,3 +1,2 @@
-seed = 6288
-O: timedout
-./lmabaso.filler: Segfault at 0
+seed = 8384
+O: error on input

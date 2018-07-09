@@ -38,7 +38,9 @@ int		main(void)
                 while (j < input->bx)
                 {
                     ft_putnbr_fd(board[i][j].score, fd);
-                    ft_putchar_fd(' ', fd);
+                    if (board[i][j].score < 10)
+						ft_putchar_fd(' ', fd);
+					ft_putchar_fd(' ', fd);
                     j++;
                 }
                 ft_putchar_fd('\n', fd);
