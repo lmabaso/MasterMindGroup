@@ -28,21 +28,22 @@ void	ft_get_info(t_obj *input)
 	{
 		if (!input->board && !(input->board = (char **)malloc(sizeof(char *) * input->by)))
 			return ;
+		input->board[input->by] = NULL;
 		input->board[input->i] = ft_strdup(ft_strchr(input->line, '.'));
 		input->i += 1;
 	}
 	if (*input->line == '.' || *input->line == '*')
 	{
-		if (!input->piece && !(input->piece = (char **)malloc(sizeof(char *) * input->py)))
-			return ;
+		if (!input->piece) 
+			if (!(input->piece = (char **)malloc(sizeof(char *) * input->py + 1)))
+				return ;
+		input->piece[input->py] = NULL;
 		input->piece[input->j] = ft_strdup(input->line);
 		input->j++;
 		if (input->j == input->py)
+		{
 			input->isdone = 1;
-	}
-	if (ft_strncmp(input->line, "Player with ", 12) == 0)
-	{
-		if (input->line[13] == input->mypiece)
-			input->gameover = 1;
+			//input->piece = NULL;
+		}
 	}
 }

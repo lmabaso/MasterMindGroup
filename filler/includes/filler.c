@@ -2,7 +2,7 @@
 
 void	ft_lstprint_fd(t_list *head, int fd)
 {
-	t_best	*tmp;
+	t_co	*tmp;
 
 	while (head)
 	{
@@ -10,9 +10,9 @@ void	ft_lstprint_fd(t_list *head, int fd)
 		ft_putnbr_fd(tmp->y, fd);
 		ft_putchar_fd(' ', fd);
 		ft_putnbr_fd(tmp->x, fd);
-		ft_putchar_fd(' ', fd);
-		ft_putnbr_fd(tmp->score, fd);
 		ft_putchar_fd('\n', fd);
+		// ft_putnbr_fd(tmp->score, fd);
+		// ft_putchar_fd('\n', fd);
 		head = head->next;
 	}
 }
@@ -65,6 +65,7 @@ int		ft_check_overlap(t_co board, t_obj input, int *score, t_spot **heat)
 	overlap = 0;
 	i = 0;
 	k = board.y;
+
 	while (i < input.py)
 	{
 		l = board.x;
@@ -75,7 +76,7 @@ int		ft_check_overlap(t_co board, t_obj input, int *score, t_spot **heat)
 			{
 				overlap++;
 			}
-			if (input.board[k][l] == input.oppiece)
+			if (input.piece[i][j] == '*' && input.board[k][l] == input.oppiece)
 				return (0);
 			if (input.piece[i][j] == '*')
 				count += heat[k][l].score;
@@ -84,6 +85,8 @@ int		ft_check_overlap(t_co board, t_obj input, int *score, t_spot **heat)
 		}
 		i++;
 		k++;
+		if ((l > input.bx && input.piece[i][j] == '*') || (k > input.by && input.piece[i][j] == '*'))
+				return (0);
 	}
 	*score = count;
 	return (overlap);
@@ -105,6 +108,7 @@ void	ft_toplace(t_co board, t_obj input, t_spot **heat)
 	i = 0;
 	tmp_piece.y = 0;
 	tmp_piece.x = 0;
+	valid = NULL;
 	while (i < input.py)
 	{
 		j = 0;
@@ -125,7 +129,6 @@ void	ft_toplace(t_co board, t_obj input, t_spot **heat)
 		}
 		i++;
 	}
-
 	tmp_valid = valid;
 	lowest = tmp_valid->content;
 	while (tmp_valid)

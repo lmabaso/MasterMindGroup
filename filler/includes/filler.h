@@ -60,6 +60,6 @@ void		ft_init_struct(t_obj *input);
 void		ft_toplace(t_co board, t_obj input, t_spot **heat);
 t_list		*ft_get_opponent_pieces(t_obj input);
 t_co		*ft_lst_to_arr(t_list *head, int i);
-t_co		ft_find_low_cost(t_list *moves, t_spot **board);
+t_list		*ft_find_low_cost(t_list *moves, t_spot **board);
 int			ft_get_lowest(t_list *neighbours, t_spot **board);
 #endif

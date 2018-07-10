@@ -17,7 +17,7 @@ t_list	*ft_get_available_move(t_obj input)
 		j = 0;
 		while (j < input.bx)
 		{
-			if (input.board[i][j] == input.mypiece)
+			if (input.board[i][j] == input.mypiece || input.board[i][j] == input.mypiece + 32)
 			{
 				tmp->y = i;
 				tmp->x = j;
@@ -47,27 +47,24 @@ int			ft_get_lowest(t_list *neighbours, t_spot **board)
 	return (tmp);
 }
 
-t_co	ft_find_low_cost(t_list *moves, t_spot **board)
+t_list	*ft_find_low_cost(t_list *moves, t_spot **board)
 {
-	t_co	low_cost;
+	t_list	*head;
+	t_best	*low_cost;
 	t_co	*holder;
-	int		tmp;
-	int		a;
 
+	head = NULL;
 	holder = moves->content;
-	low_cost.y = holder->y;
-	low_cost.x = holder->x;
-	tmp = ft_get_lowest(board[holder->y][holder->x].neighbours, board);
+	low_cost->y = holder->y;
+	low_cost->x = holder->x;
 	while (moves)
 	{
 		holder = moves->content;
-		a = ft_get_lowest(board[holder->y][holder->x].neighbours, board);
-		if (a < tmp && a > 0)
-		{
-			low_cost.y = holder->y;
-			low_cost.x = holder->x;
-		} 
+		low_cost->score = ft_get_lowest(board[holder->y][holder->x].neighbours, board);
+		low_cost->y = holder->y;
+		low_cost->x = holder->x;
+		ft_lstadd(&head, ft_lstnew(low_cost, sizeof(t_best)));
 		moves = moves->next;
 	}
-	return (low_cost);
+	return (head);
 }
