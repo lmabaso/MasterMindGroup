@@ -34,6 +34,13 @@ typedef	struct	coordinates
 	int			y;
 }				t_co;
 
+typedef struct	bestmove
+{
+	int			x;
+	int			y;
+	int			score;
+}				t_best;
+
 typedef struct	spot
 {
 	int			x;
@@ -50,7 +57,9 @@ void		ft_get_info(t_obj *input);
 t_list		*ft_get_available_move(t_obj input);
 t_list		*ft_get_physical_sqr(t_obj input);
 void		ft_init_struct(t_obj *input);
-void		ft_toplace(t_list *board, t_list *piece);
+void		ft_toplace(t_co board, t_obj input, t_spot **heat);
 t_list		*ft_get_opponent_pieces(t_obj input);
 t_co		*ft_lst_to_arr(t_list *head, int i);
+t_co		ft_find_low_cost(t_list *moves, t_spot **board);
+int			ft_get_lowest(t_list *neighbours, t_spot **board);
 #endif
