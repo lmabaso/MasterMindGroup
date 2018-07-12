@@ -2,7 +2,7 @@
 
 void	ft_lstprint_fd(t_list *head, int fd)
 {
-	t_co	*tmp;
+	t_best	*tmp;
 
 	while (head)
 	{
@@ -11,8 +11,8 @@ void	ft_lstprint_fd(t_list *head, int fd)
 		ft_putchar_fd(' ', fd);
 		ft_putnbr_fd(tmp->x, fd);
 		ft_putchar_fd('\n', fd);
-		// ft_putnbr_fd(tmp->score, fd);
-		// ft_putchar_fd('\n', fd);
+		ft_putnbr_fd(tmp->score, fd);
+		ft_putchar_fd('\n', fd);
 		head = head->next;
 	}
 }
@@ -35,23 +35,6 @@ t_co	*ft_lst_to_arr(t_list *head, int i)
 	return (*array);
 }
 
-t_co	ft_correct_point_b(t_co board, t_co *piece)
-{
-	t_co correct;
-
-	correct.y = board.y - piece->y;
-	correct.x = board.x - piece->x;
-	return (correct);
-}
-
-void	ft_play(t_co toplace)
-{
-	ft_putnbr(toplace.y);
-	ft_putchar(' ');
-	ft_putnbr(toplace.x);
-	ft_putchar('\n');
-}
-
 int		ft_check_overlap(t_co board, t_obj input, int *score, t_spot **heat)
 {
 	int		i;
@@ -65,83 +48,88 @@ int		ft_check_overlap(t_co board, t_obj input, int *score, t_spot **heat)
 	overlap = 0;
 	i = 0;
 	k = board.y;
-
 	while (i < input.py)
 	{
 		l = board.x;
 		j = 0;
 		while (j < input.px)
 		{
-			if (input.piece[i][j] == '*' && input.board[k][l] == input.mypiece)
-			{
-				overlap++;
-			}
+			if (l > input.bx - 1 && input.piece[i][j] == '*')
+				return (0);
+			if (l < 0 && input.piece[i][j] == '*')
+				return (0);
+			if (k > input.by - 1 && input.piece[i][j] == '*')
+				return (0);
+			if (k < 0 && input.piece[i][j] == '*')
+			return (0);
 			if (input.piece[i][j] == '*' && input.board[k][l] == input.oppiece)
 				return (0);
+			if (input.piece[i][j] == '*' && input.board[k][l] == input.mypiece)
+				overlap++;
 			if (input.piece[i][j] == '*')
 				count += heat[k][l].score;
 			l++;
 			j++;
 		}
 		i++;
-		k++;
-		if ((l > input.bx && input.piece[i][j] == '*') || (k > input.by && input.piece[i][j] == '*'))
-				return (0);
+		k++;	
 	}
 	*score = count;
 	return (overlap);
 }
 
-void	ft_toplace(t_co board, t_obj input, t_spot **heat)
+t_list	*ft_valid_moves(t_co board, t_obj input, t_spot **heat)
 {
-	t_co	toplace;
-	t_co	tmp_piece;
-	t_best  move;
 	t_list	*valid;
+	t_best  move;
+	t_co	tmp_piece;
+	t_co	toplace;
 	int		i;
 	int		j;
 	int		score;
-	t_list	*tmp_valid;
-	t_best	*lowest;
-	t_best	*tmp;
-	
-	i = 0;
-	tmp_piece.y = 0;
-	tmp_piece.x = 0;
+
 	valid = NULL;
+	ft_put_to_co(&tmp_piece, 0, 0);
+	i = 0;
 	while (i < input.py)
 	{
 		j = 0;
 		while (j < input.px)
 		{
-			tmp_piece.y = i;
-			tmp_piece.x = j;
+			ft_put_to_co(&tmp_piece, j, i);
 			toplace = ft_correct_point_b(board, &tmp_piece);
 			score = 0;
 			if (ft_check_overlap(toplace, input, &score, heat) == 1)
 			{
-				move.score = score;
-				move.x = j;
-				move.y = i;
+				ft_put_in_best(&move, j, i, score);
 				ft_lstadd(&valid, ft_lstnew(&move, sizeof(t_best)));
 			}
 			j++;
 		}
 		i++;
 	}
-	tmp_valid = valid;
-	lowest = tmp_valid->content;
-	while (tmp_valid)
+	return (valid);
+}
+
+int		ft_toplace(t_co board, t_obj input, t_spot **heat, t_co *bestmove)
+{
+	t_co	tmp_piece;
+	t_list	*valid;
+	t_best	*lowest;
+	t_best	*tmp;
+
+	valid = ft_valid_moves(board, input, heat);
+	if (ft_lstlen(valid) == 0)
+		return (0);
+	lowest = valid->content;
+	while (valid)
 	{
-		tmp = tmp_valid->content;
+		tmp = valid->content;
 		if (tmp->score < lowest->score)
 			lowest = tmp;
-		tmp_valid = tmp_valid->next;
+		valid = valid->next;
 	}
-	tmp_piece.y = lowest->y;
-	tmp_piece.x = lowest->x;
-	toplace = ft_correct_point_b(board, &tmp_piece);
-
-	ft_play(toplace);
-	// return (valid);
+	ft_best_to_co(&tmp_piece, *lowest);
+	*bestmove = ft_correct_point_b(board, &tmp_piece);
+	return (1);
 }

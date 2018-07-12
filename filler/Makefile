@@ -9,6 +9,8 @@ SRC = includes/filler.c \
 	  includes/ft_init_struct.c \
 	  includes/main.c \
 	  includes/ft_get_opponent_pieces.c \
+	  includes/ft_struct_op.c \
+	  includes/ft_placement.c \
 
 
 OBJ = *.o

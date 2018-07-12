@@ -1,3 +1,3 @@
-seed = 2629
+seed = 3641
 O: error on input
-./lmabaso.filler: Segfault at 14
+./lmabaso.filler: Segfault at 40
