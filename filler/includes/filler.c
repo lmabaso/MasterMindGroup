@@ -1,40 +1,5 @@
 #include "filler.h"
 
-void	ft_lstprint_fd(t_list *head, int fd)
-{
-	t_best	*tmp;
-
-	while (head)
-	{
-		tmp =  head->content;
-		ft_putnbr_fd(tmp->y, fd);
-		ft_putchar_fd(' ', fd);
-		ft_putnbr_fd(tmp->x, fd);
-		ft_putchar_fd('\n', fd);
-		ft_putnbr_fd(tmp->score, fd);
-		ft_putchar_fd('\n', fd);
-		head = head->next;
-	}
-}
-
-t_co	*ft_lst_to_arr(t_list *head, int i)
-{
-	int count;
-	t_co *array[i];
-	t_co *tmp;
-
-	count = 0;
-	while (head)
-	{
-		tmp = head->content;
-		array[count] = tmp;
-		count++;
-		head = head->next;
-	}
-	array[count] = NULL;
-	return (*array);
-}
-
 int		ft_check_overlap(t_co board, t_obj input, int *score, t_spot **heat)
 {
 	int		i;
@@ -61,7 +26,7 @@ int		ft_check_overlap(t_co board, t_obj input, int *score, t_spot **heat)
 			if (k > input.by - 1 && input.piece[i][j] == '*')
 				return (0);
 			if (k < 0 && input.piece[i][j] == '*')
-			return (0);
+				return (0);
 			if (input.piece[i][j] == '*' && input.board[k][l] == input.oppiece)
 				return (0);
 			if (input.piece[i][j] == '*' && input.board[k][l] == input.mypiece)
@@ -118,6 +83,7 @@ int		ft_toplace(t_co board, t_obj input, t_spot **heat, t_co *bestmove)
 	t_best	*lowest;
 	t_best	*tmp;
 
+	ft_put_to_co(bestmove, -42, -42);
 	valid = ft_valid_moves(board, input, heat);
 	if (ft_lstlen(valid) == 0)
 		return (0);
@@ -131,5 +97,7 @@ int		ft_toplace(t_co board, t_obj input, t_spot **heat, t_co *bestmove)
 	}
 	ft_best_to_co(&tmp_piece, *lowest);
 	*bestmove = ft_correct_point_b(board, &tmp_piece);
+	if (bestmove->x == -42 || bestmove->y == -42)
+		return (0);
 	return (1);
 }

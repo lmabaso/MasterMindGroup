@@ -1,6 +1,5 @@
 #include "filler.h"
-
-void	ft_get_info(t_obj *input)
+void	ft_findplayer(t_obj *input)
 {
 	char **tmp;
 
@@ -8,7 +7,7 @@ void	ft_get_info(t_obj *input)
 	{
 		input->player = ft_strsub(input->line, 9, 2);
 		input->mypiece = (ft_strcmp(input->player, "p1") == 0) ? 'O' : 'X';
-		input->oppiece = (ft_strcmp(input->player, "p1") == 0) ? 'X' : 'O';
+		input->oppiece = (input->mypiece == 'O') ? 'X' : 'O';
 	}
 	if (ft_strncmp(input->line, "Plateau ", 8) == 0)
 	{
@@ -24,13 +23,22 @@ void	ft_get_info(t_obj *input)
 		input->px = ft_atoi(tmp[2]);
 		ft_strdel(tmp);
 	}
-	if (ft_isdigit(*input->line))
+}
+
+void	ft_get_info(t_obj *input)
+{
+	ft_findplayer(input);
+	if (*input->line == ' ')
 	{
 		if (!input->board && !(input->board = (char **)malloc(sizeof(char *) * input->by)))
 			return ;
-		input->board[input->by] = NULL;
-		input->board[input->i] = ft_strdup(ft_strchr(input->line, '.'));
-		input->i += 1;
+		while (input->i < input->by)
+		{
+			get_next_line(0, &input->line);
+			input->board[input->i] = ft_strdup(ft_strchr(input->line, '.'));
+			input->i += 1;
+		}
+		input->board[input->i] = NULL;
 	}
 	if (*input->line == '.' || *input->line == '*')
 	{
@@ -41,9 +49,6 @@ void	ft_get_info(t_obj *input)
 		input->piece[input->j] = ft_strdup(input->line);
 		input->j++;
 		if (input->j == input->py)
-		{
 			input->isdone = 1;
-			//input->piece = NULL;
-		}
 	}
 }

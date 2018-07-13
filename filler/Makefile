@@ -3,14 +3,18 @@ NAME = lmabaso.filler
 SRC = includes/filler.c \
 	  includes/ft_get_info.c \
 	  includes/ft_makeboard.c \
+	  includes/ft_find_close.c \
 	  includes/ft_get_neighbours.c \
 	  includes/ft_get_available_move.c \
-	  includes/ft_get_physical_spr.c \
 	  includes/ft_init_struct.c \
 	  includes/main.c \
-	  includes/ft_get_opponent_pieces.c \
 	  includes/ft_struct_op.c \
 	  includes/ft_placement.c \
+	  includes/ft_test.c \
+	  includes/ft_lstsort.c \
+	  includes/ft_maths.c \
+
+	  
 
 
 OBJ = *.o
