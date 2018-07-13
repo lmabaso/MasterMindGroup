@@ -50,7 +50,7 @@ void	ft_get_score(int i, t_obj input, t_spot ***temp)
 t_spot	**ft_makeboard(t_obj input)
 {
 	t_spot	**board;
-	int i;
+	int		i;
 
 	i = 0;
 	if (!(board = (t_spot **)malloc(sizeof(t_spot *) * input.by)))

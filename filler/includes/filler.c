@@ -37,7 +37,7 @@ int		ft_check_overlap(t_co board, t_obj input, int *score, t_spot **heat)
 			j++;
 		}
 		i++;
-		k++;	
+		k++;
 	}
 	*score = count;
 	return (overlap);

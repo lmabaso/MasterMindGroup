@@ -23,8 +23,8 @@ void		ft_neighbours(int y, int x, t_obj input, t_co **temp, t_list **rhead)
 
 t_list		*ft_get_neighbours(int y, int x, t_obj input)
 {
-	t_list *head;
-	t_co *tmp;
+	t_list	*head;
+	t_co	*tmp;
 
 	head = NULL;
 	tmp = NULL;

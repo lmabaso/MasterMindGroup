@@ -1,4 +1,5 @@
 #include "filler.h"
+
 void	ft_findplayer(t_obj *input)
 {
 	char **tmp;
@@ -30,7 +31,8 @@ void	ft_get_info(t_obj *input)
 	ft_findplayer(input);
 	if (*input->line == ' ')
 	{
-		if (!input->board && !(input->board = (char **)malloc(sizeof(char *) * input->by)))
+		if (!input->board &&
+				!(input->board = (char **)malloc(sizeof(input->by))))
 			return ;
 		while (input->i < input->by)
 		{
@@ -42,8 +44,8 @@ void	ft_get_info(t_obj *input)
 	}
 	if (*input->line == '.' || *input->line == '*')
 	{
-		if (!input->piece) 
-			if (!(input->piece = (char **)malloc(sizeof(char *) * input->py + 1)))
+		if (!input->piece)
+			if (!(input->piece = (char **)malloc(sizeof(input->py + 1))))
 				return ;
 		input->piece[input->py] = NULL;
 		input->piece[input->j] = ft_strdup(input->line);

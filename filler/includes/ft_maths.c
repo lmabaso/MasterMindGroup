@@ -17,10 +17,11 @@ double	ft_sqrt(double num)
 	return (i - 1);
 }
 
-double getDistance(t_co a, t_co b)
+double	ft_get_distance(t_co a, t_co b)
 {
 	double distance;
 
-	distance = ft_sqrt((a.x - b.x) * (a.x - b.x) + (a.y-b.y) * (a.y-b.y));
+	distance = ft_sqrt((a.x - b.x) * (a.x - b.x) +
+			(a.y - b.y) * (a.y - b.y));
 	return (distance);
 }

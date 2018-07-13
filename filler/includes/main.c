@@ -1,20 +1,20 @@
 #include "filler.h"
 #include <fcntl.h>
 
-int		ft_make_best_move(t_list *moves, t_obj input, t_spot **board, t_co	*bestmove)
+int		ft_best_move(t_list *moves, t_obj input, t_spot **board, t_co *best)
 {
 	t_best	*tmp;
 	t_co	eval;
 
-	ft_put_to_co(bestmove, -42, -42);
+	ft_put_to_co(best, -42, -42);
 	moves = insertion_sort(moves);
 	while (moves)
 	{
 		tmp = moves->content;
 		ft_best_to_co(&eval, *tmp);
-		if (ft_toplace(eval, input, board, bestmove))
+		if (ft_toplace(eval, input, board, best))
 		{
-			if (bestmove->x != -42 && bestmove->y != -42)
+			if (best->x != -42 && best->y != -42)
 				return (1);
 		}
 		moves = moves->next;
@@ -52,7 +52,7 @@ int		main(void)
 			//ft_test_show_heat(board, fd, input);
 			if (ft_get_available_move(*input, &moves) == 0)
 				break ;
-			if (ft_make_best_move(ft_lowcost(moves, board), *input, board, &bestmove))
+			if (ft_best_move(ft_lowcost(moves, board), *input, board, &bestmove))
 				ft_play(bestmove);
 			ft_makezero(input);
 		}
