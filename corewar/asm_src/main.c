@@ -15,6 +15,25 @@ int		ft_islabel(char *str)
 	return (0);
 }
 
+char	*ft_strfix(char *str)
+{
+	char	*fix;
+	size_t	i;
+
+	i = 0;
+	if (!(fix = ft_strnew(ft_strlen(str))))
+		return (NULL);
+	while (str[i])
+	{
+		if (ft_isspace(str[i]))
+			fix[i] = ' ';
+		else
+			fix[i] = str[i];
+		i++;
+	}
+	return (fix);
+}
+
 int		main(int c, char **av)
 {
 	header_t	*info;
@@ -24,7 +43,10 @@ int		main(int c, char **av)
 	t_data		entry;
 	int			index;
 	t_data		*tmp;
+	char		*tmp0;
+	char		**tmp1;
 	
+	tmp1 = NULL;
 	raw_data = NULL;
 	info = ft_memalloc(sizeof(header_t));
 	if (c < 2)
@@ -59,13 +81,11 @@ int		main(int c, char **av)
 			index = 0;
 			if (ft_islabel(line))
 			{
-				index = ft_strlen(line) - ft_strlen(ft_strchr(line, ':'));
-				entry.label = ft_strsub(line, 0, index);
-				index++;
-				while (ft_isspace(line[index]))
-					index++;
-				// line += index;
-				// entry.opcode = ft_strsub(line, 0, ft_strlen(line));
+				tmp0 = ft_strfix(line);
+				tmp1 = ft_strsplit(tmp0, ' ');
+				entry.label = tmp1[0];
+				entry.opcode = tmp1[1];
+				entry.data = tmp1[2];
 				ft_lstadd(&raw_data, ft_lstnew(&entry, sizeof(t_data)));
 			}
 			// else if (index == 0)
@@ -77,12 +97,16 @@ int		main(int c, char **av)
 			
 		}
 		// ft_putendl(line);
-		// free(line);
+		free(line);
 	}
 	while (raw_data)
 	{
 		tmp = raw_data->content;
-		ft_putendl(tmp->label);
+		// ft_putstr(tmp->label);
+		// ft_putstr(" ");
+		// ft_putstr(tmp->opcode);
+		ft_putstr("\n");
+		ft_putstr(tmp->data);
 		raw_data = raw_data->next;
 	}
 	// fdw = open("test.cor", O_CREAT | O_WRONLY | O_TRUNC);
