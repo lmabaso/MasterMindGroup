@@ -1,6 +1,7 @@
-NAME	=	corewar
+NAME	=	asm
 
-SRC		= 	src/corewar.c \
+SRC		= 	asm_src/main.c
+
 			
 OJB		= 	*.o
 

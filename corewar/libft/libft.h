@@ -104,4 +104,5 @@ void				ft_putendl_fd(char *str, int fd);
 void				ft_putendl(char *str);
 void				ft_putnbr_fd(int n, int fd);
 void				ft_putnbr(int n);
+void				ft_putuchar_fd(unsigned char c, int fd);
 #endif
