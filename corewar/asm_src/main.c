@@ -2,6 +2,28 @@
 #include <fcntl.h>
 #include <stdio.h>
 
+void		ft_append(t_node** head, t_data new_data)
+{
+    t_node	*new_node;
+    t_node	*last;
+
+	new_node = ft_memalloc(sizeof(t_node));
+	last = *head;
+    new_node->entry = new_data;
+    new_node->next = NULL;
+    if (*head == NULL)
+    {
+       *head = new_node;
+       return ;
+    }
+    while (last->next != NULL)
+        last = last->next;
+    last->next = new_node;
+    return ;
+}
+
+
+
 int		ft_islabel(char *str)
 {
 	while (*str)
@@ -34,88 +56,111 @@ char	*ft_strfix(char *str)
 	return (fix);
 }
 
-int		main(int c, char **av)
+void	ft_check_input(int ac, char **ag)
 {
-	header_t	*info;
-	int			fdr;
-	char		*line;
-	t_list		*raw_data;
-	t_data		entry;
-	int			index;
-	t_data		*tmp;
-	char		*tmp0;
-	char		**tmp1;
-	
-	tmp1 = NULL;
-	raw_data = NULL;
-	info = ft_memalloc(sizeof(header_t));
-	if (c < 2)
+	char *tmp;
+
+	tmp = NULL;
+	if (ac != 2)
 	{
-		ft_putendl("We'd realy like your input");
-		return (0);
+		ft_putendl("Usage: ./asm [-a] <sourcefile.s>");
+		ft_putendl("\t-a : Instead of creating a .cor file, outputs a stripped and annotated version of the code to the standard output");
+		exit(0);
 	}
-	fdr = 0;
-	fdr = open(av[1], O_RDONLY);
-	while (get_next_line(fdr, &line))
+	else
 	{
-		index = 0;
-		if (line[0] == '.')
+		tmp = ft_strrchr(ag[1], '.');
+		if (ft_strncmp(".s", tmp, 2))
 		{
-			if (ft_strncmp(line, ".name", 5) == 0)
-			{
-				index = 5;
-				while (line[index] == ' ')
-					index++;
-				ft_strcat(info->prog_name, &line[index]);
-			}
-			if (ft_strncmp(line, ".comment", 8) == 0)
-			{
-				index = 8;
-				while (line[index] == ' ')
-					index++;
-				ft_strcat(info->comment , &line[index]);
-			}
+			ft_putendl("Invalid file input");
+			exit(0);
+		}
+	}
+	
+}
+
+void	ft_init(t_obj *c)
+{
+	c->info = ft_memalloc(sizeof(header_t));
+	c->raw = NULL;
+}
+
+void	ft_init_header(t_obj *c)
+{
+	char		*fixinput;
+	char		**tmp1;
+
+	if (ft_strncmp(c->line, ".name", 5) == 0)
+	{
+		tmp1 = ft_strsplit(fixinput, ' ');
+		ft_strcat(c->info->prog_name, tmp1[1]);
+	}
+	else if (ft_strncmp(c->line, ".comment", 8) == 0)
+	{
+		tmp1 = ft_strsplit(fixinput, ' ');
+		ft_strcat(c->info->comment , tmp1[1]);
+	}
+}
+
+void	ft_process_input(t_obj *c)
+{
+	char		**tmp1;
+
+	tmp1 = NULL;
+	if (ft_strlen(c->fixinput) != 0)
+	{
+		if (ft_islabel(c->fixinput))
+		{
+			tmp1 = ft_strsplit(c->fixinput, ' ');
+			c->entry.label = tmp1[0];
+			c->entry.opcode = tmp1[1];
+			c->entry.data = tmp1[2];
+			ft_append(&c->raw, c->entry);
 		}
 		else
 		{
-			index = 0;
-			if (ft_islabel(line))
-			{
-				tmp0 = ft_strfix(line);
-				tmp1 = ft_strsplit(tmp0, ' ');
-				entry.label = tmp1[0];
-				entry.opcode = tmp1[1];
-				entry.data = tmp1[2];
-				ft_lstadd(&raw_data, ft_lstnew(&entry, sizeof(t_data)));
-			}
-			// else if (index == 0)
-			// {
-			// 	entry.label = NULL;
-			// 	ft_lstadd(&raw_data, ft_lstnew(&entry, sizeof(t_data)));
-			// }
-				
-			
+			tmp1 = ft_strsplit(c->fixinput, ' ');
+			c->entry.label = NULL;
+			c->entry.opcode = tmp1[0];
+			c->entry.data = tmp1[1];
+			ft_append(&c->raw, c->entry);
 		}
-		// ft_putendl(line);
-		free(line);
 	}
-	while (raw_data)
-	{
-		tmp = raw_data->content;
-		// ft_putstr(tmp->label);
-		// ft_putstr(" ");
-		// ft_putstr(tmp->opcode);
-		ft_putstr("\n");
-		ft_putstr(tmp->data);
-		raw_data = raw_data->next;
-	}
-	// fdw = open("test.cor", O_CREAT | O_WRONLY | O_TRUNC);
-	// ft_putuchar_fd(0, fdw);
-	// ft_putuchar_fd(234, fdw);
-	// ft_putuchar_fd(131, fdw);
-	// ft_putuchar_fd(243, fdw);
+}
 
+void	ft_read_file(t_obj *c, int fdr)
+{
+	while (get_next_line(fdr, &c->line))
+	{
+		c->fixinput = ft_strfix(c->line);
+		if (c->line[0] == '.')
+			ft_init_header(c);
+		else
+			ft_process_input(c);
+		free(c->line);
+	}
+}
+
+int		main(int ac, char **av)
+{
+	t_obj		*c;
+	int			fdr;
 	
-	// ft_putstr_fd(ft_strrchr(line, ' ') + 2, fdw);
+	ft_check_input(ac, av);
+	c = ft_memalloc(sizeof(t_obj));
+	ft_init(c);
+	fdr = open(av[1], O_RDONLY);
+	ft_read_file(c, fdr);
+
+	while (c->raw)
+	{
+		if (c->raw->entry.label)
+			ft_putstr(c->raw->entry.label);
+		ft_putstr(" ");
+		ft_putstr(c->raw->entry.opcode);
+		ft_putstr(" ");
+		ft_putendl(c->raw->entry.data);
+		c->raw = c->raw->next;
+	}
 	return (0);
 }

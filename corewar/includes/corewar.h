@@ -16,5 +16,18 @@ typedef struct      s_data
     char            *data;
 }                   t_data;
 
+typedef struct      s_node
+{
+    t_data          entry;
+    struct s_node   *next;
+}                   t_node;
 
+typedef struct      s_obj
+{
+    char            *line;
+    char		    *fixinput;
+    header_t        *info;
+    t_node		    *raw;
+    t_data          entry;
+}                   t_obj; 
 #endif
