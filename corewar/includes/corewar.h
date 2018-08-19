@@ -29,5 +29,12 @@ typedef struct      s_obj
     header_t        *info;
     t_node		    *raw;
     t_data          entry;
-}                   t_obj; 
+}                   t_obj;
+
+void                ft_init(t_obj *c);
+char                *ft_strfix(char *str);
+void	            ft_init_header(t_obj *c);
+
+void                ft_lfree(t_node **head);
+void	            ft_to_free(t_obj *c);
 #endif

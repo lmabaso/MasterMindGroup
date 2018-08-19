@@ -1,6 +1,8 @@
 NAME	=	asm
 
-SRC		= 	asm_src/main.c
+SRC		= 	asm_src/main.c \
+			asm_src/ft_init.c \
+			asm_src/ft_free_stuff.c
 
 			
 OJB		= 	*.o

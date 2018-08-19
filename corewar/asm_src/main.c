@@ -37,25 +37,6 @@ int		ft_islabel(char *str)
 	return (0);
 }
 
-char	*ft_strfix(char *str)
-{
-	char	*fix;
-	size_t	i;
-
-	i = 0;
-	if (!(fix = ft_strnew(ft_strlen(str))))
-		return (NULL);
-	while (str[i])
-	{
-		if (ft_isspace(str[i]))
-			fix[i] = ' ';
-		else
-			fix[i] = str[i];
-		i++;
-	}
-	return (fix);
-}
-
 void	ft_check_input(int ac, char **ag)
 {
 	char *tmp;
@@ -73,57 +54,52 @@ void	ft_check_input(int ac, char **ag)
 		if (ft_strncmp(".s", tmp, 2))
 		{
 			ft_putendl("Invalid file input");
+			tmp = NULL;
 			exit(0);
 		}
 	}
 	
 }
 
-void	ft_init(t_obj *c)
-{
-	c->info = ft_memalloc(sizeof(header_t));
-	c->raw = NULL;
-}
-
-void	ft_init_header(t_obj *c)
-{
-	char		*fixinput;
-	char		**tmp1;
-
-	if (ft_strncmp(c->line, ".name", 5) == 0)
-	{
-		tmp1 = ft_strsplit(fixinput, ' ');
-		ft_strcat(c->info->prog_name, tmp1[1]);
-	}
-	else if (ft_strncmp(c->line, ".comment", 8) == 0)
-	{
-		tmp1 = ft_strsplit(fixinput, ' ');
-		ft_strcat(c->info->comment , tmp1[1]);
-	}
-}
-
 void	ft_process_input(t_obj *c)
 {
-	char		**tmp1;
+	char		**tmp;
+	int			i;
 
-	tmp1 = NULL;
+	tmp = NULL;
 	if (ft_strlen(c->fixinput) != 0)
 	{
 		if (ft_islabel(c->fixinput))
 		{
-			tmp1 = ft_strsplit(c->fixinput, ' ');
-			c->entry.label = tmp1[0];
-			c->entry.opcode = tmp1[1];
-			c->entry.data = tmp1[2];
+			tmp = ft_strsplit(c->fixinput, ' ');
+			c->entry.label = ft_strdup(tmp[0]);
+			c->entry.opcode = ft_strdup(tmp[1]);
+			c->entry.data = ft_strdup(tmp[2]);
 			ft_append(&c->raw, c->entry);
+			i = 0;
+			while (tmp[i])
+			{
+				free(tmp[i]);
+				i++;
+			}
+			free(tmp);
+			tmp = NULL;
 		}
 		else
 		{
-			tmp1 = ft_strsplit(c->fixinput, ' ');
+			tmp = ft_strsplit(c->fixinput, ' ');
 			c->entry.label = NULL;
-			c->entry.opcode = tmp1[0];
-			c->entry.data = tmp1[1];
+			c->entry.opcode = ft_strdup(tmp[0]);
+			c->entry.data = ft_strdup(tmp[1]);
 			ft_append(&c->raw, c->entry);
+			i = 0;
+			while (tmp[i])
+			{
+				free(tmp[i]);
+				i++;
+			}
+			free(tmp);
+			tmp = NULL;
 		}
 	}
 }
@@ -138,7 +114,47 @@ void	ft_read_file(t_obj *c, int fdr)
 		else
 			ft_process_input(c);
 		free(c->line);
+		free(c->fixinput);
 	}
+}
+
+void	print(t_node *raw)
+{
+	while (raw)
+	{
+		if (raw->entry.label)
+			ft_putstr(raw->entry.label);
+		ft_putstr(" - ");
+		ft_putstr(raw->entry.opcode);
+		ft_putstr(" - ");
+		ft_putendl(raw->entry.data);
+		raw = raw->next;
+	}
+}
+
+void	ft_lfree(t_node **head)
+{
+	t_node  *current;
+    t_node  *next;
+
+    current = *head;
+    while (current != NULL)
+    {
+		if (current->entry.label)
+			free(current->entry.label);
+		free(current->entry.opcode);
+		free(current->entry.data);
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    *head = NULL;
+}
+
+void	ft_free_stuff(t_obj *c)
+{
+	ft_lfree(&c->raw);
+	free(c->info);
 }
 
 int		main(int ac, char **av)
@@ -151,16 +167,9 @@ int		main(int ac, char **av)
 	ft_init(c);
 	fdr = open(av[1], O_RDONLY);
 	ft_read_file(c, fdr);
-
-	while (c->raw)
-	{
-		if (c->raw->entry.label)
-			ft_putstr(c->raw->entry.label);
-		ft_putstr(" ");
-		ft_putstr(c->raw->entry.opcode);
-		ft_putstr(" ");
-		ft_putendl(c->raw->entry.data);
-		c->raw = c->raw->next;
-	}
+	print(c->raw);
+	ft_free_stuff(c);
+	// while (1)
+	// 	;
 	return (0);
 }
