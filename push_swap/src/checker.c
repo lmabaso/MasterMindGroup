@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   checker.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lmabaso <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/08/21 14:11:59 by lmabaso           #+#    #+#             */
+/*   Updated: 2018/08/21 14:23:12 by lmabaso          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 #include <fcntl.h>
 
-int		valid_arg(char *arg)
+static int		valid_arg(char *arg)
 {
 	return (ft_strequ(arg, "sa") || ft_strequ(arg, "sb") ||
 			ft_strequ(arg, "ss") || ft_strequ(arg, "ra") ||
@@ -11,29 +23,31 @@ int		valid_arg(char *arg)
 			|| ft_strequ(arg, "rra"));
 }
 
-int		getcmd(char **cmd, t_list *a, t_list *b)
+static int		getcmd(t_list *a, t_list *b)
 {
-	(void)b;
-	while (get_next_line(0, cmd) > 0 && valid_arg(*cmd))
-		ft_update(&a, &b, *cmd);
-	if (*cmd && !valid_arg(*cmd))
+	char		*line;
+
+	line = NULL;
+	while (get_next_line(0, &line) > 0 && valid_arg(line))
+	{
+		ft_update(&a, &b, line);
+		free(line);
+	}
+	if (line && !valid_arg(line))
 		ft_putendl("error");
 	else
 		ft_putendl(ft_isdone(&a, &b) ? "OK" : "KO");
 	return (0);
 }
 
-int		main(int ac, char **av)
+int				main(int ac, char **av)
 {
-	t_list	*a;
-	t_list	*b;
-	char *line;
+	t_list		*a;
+	t_list		*b;
 
-	line = NULL;
 	init_check(ac, av, &a, &b);
-	getcmd(&line, a, b);
+	getcmd(a, b);
 	ft_lstfree(&a);
-    ft_lstfree(&b);
-	free(line);
+	ft_lstfree(&b);
 	return (0);
 }

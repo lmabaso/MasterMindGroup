@@ -1,63 +1,75 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_minmax.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lmabaso <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/08/21 14:40:27 by lmabaso           #+#    #+#             */
+/*   Updated: 2018/08/21 14:42:59 by lmabaso          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
-int     ft_min(t_list **head)
+int			ft_min(t_list **head)
 {
-    t_list  *tmp;
-    int     min;
+	t_list	*tmp;
+	int		min;
 
-    tmp = *head;
-    min = *(int *)tmp->content;
-    while (tmp)
-    {
-        if (min > *(int *)tmp->content)
-            min = *(int *)tmp->content;
-        tmp = tmp->next;
-    }
-    return (min);
+	tmp = *head;
+	min = *(int *)tmp->content;
+	while (tmp)
+	{
+		if (min > *(int *)tmp->content)
+			min = *(int *)tmp->content;
+		tmp = tmp->next;
+	}
+	return (min);
 }
 
-int     ft_max(t_list **head)
+int			ft_max(t_list **head)
 {
-    t_list  *tmp;
-    int     max;
+	t_list	*tmp;
+	int		max;
 
-    tmp = *head;
-    max = *(int *)tmp->content;
-    while (tmp)
-    {
-        if (max < *(int *)tmp->content)
-            max = *(int *)tmp->content;
-        tmp = tmp->next;
-    }
-    return (max);
+	tmp = *head;
+	max = *(int *)tmp->content;
+	while (tmp)
+	{
+		if (max < *(int *)tmp->content)
+			max = *(int *)tmp->content;
+		tmp = tmp->next;
+	}
+	return (max);
 }
 
-int     ft_first(t_list **head)
+int			ft_first(t_list **head)
 {
-    return (*(int *)(*head)->content);
+	return (*(int *)(*head)->content);
 }
 
-int     ft_second(t_list **head)
+int			ft_second(t_list **head)
 {
-    return (*(int *)(*head)->next->content);
+	return (*(int *)(*head)->next->content);
 }
 
-int     ft_last(t_list **head)
+int			ft_last(t_list **head)
 {
-    t_list *tmp;
+	t_list	*tmp;
 
-    tmp = *head;
-    while (tmp && tmp->next)
-    {
-        tmp = tmp->next;
-    }
-    return (*(int *)tmp->content);
+	tmp = *head;
+	while (tmp && tmp->next)
+	{
+		tmp = tmp->next;
+	}
+	return (*(int *)tmp->content);
 }
 
-int     ft_pos(t_list **head, int num)
+int			ft_pos(t_list **head, int num)
 {
-    int		index;
-	t_list *tmp;
+	int		index;
+	t_list	*tmp;
 
 	tmp = *head;
 	index = 0;
@@ -71,15 +83,15 @@ int     ft_pos(t_list **head, int num)
 	return (index);
 }
 
-int     ft_at_index(t_list **head, int index)
+int			ft_at_index(t_list **head, int index)
 {
-    t_list *tmp;
+	t_list	*tmp;
 
-    tmp = *head;
-    while (index)
-    {
-        tmp = tmp->next;
-        index--;
-    }
-    return (*(int *)tmp->content);
+	tmp = *head;
+	while (index)
+	{
+		tmp = tmp->next;
+		index--;
+	}
+	return (*(int *)tmp->content);
 }

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_decisions.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lmabaso <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/08/21 14:27:25 by lmabaso           #+#    #+#             */
+/*   Updated: 2018/08/21 14:36:38 by lmabaso          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
-char        *ft_sort3(t_list **head)
+char	*ft_sort3(t_list **head)
 {
 	if (ft_issorted(head))
 		return ("ok");
@@ -11,23 +23,23 @@ char        *ft_sort3(t_list **head)
 	return ("rra");
 }
 
-char        *ft_sort10(t_list **a, t_list **b)
+char	*ft_sort10(t_list **a, t_list **b)
 {
-	int i;
+	int	i;
 
 	i = ft_lstlen(*a);
-	if (ft_issorted(a) && ! *b)
+	if (ft_issorted(a) && !*b)
 		return ("ok");
 	if (*b && ft_issorted(a) && ft_isrsorted(b))
 		return ("pa");
 	if (i == 3)
-		return ((ft_strncmp(ft_sort3(a), "ok", 2) == 0) ?  "pa" : ft_sort3(a));
+		return ((ft_strncmp(ft_sort3(a), "ok", 2) == 0) ? "pa" : ft_sort3(a));
 	if (ft_min(a) == ft_first(a))
 		return ("pb");
 	return ((ft_pos(a, ft_min(a)) <= i / 2) ? "ra" : "rra");
 }
 
-char        *ft_make(t_list **a, t_list **b, size_t i)
+char	*ft_make(t_list **a, t_list **b, size_t i)
 {
 	if (i == 2)
 		return (ft_issorted(a) ? "ok" : "sa");
