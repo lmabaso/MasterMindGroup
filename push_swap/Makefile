@@ -11,8 +11,9 @@ SRC = src/ft_verify.c \
 	  src/ft_minmax.c \
 	  src/ft_decisions.c \
 	  src/ft_sort.c \
-	  src/ft_test.c \
 	  src/ft_update.c \
+	  src/ft_find_rot.c \
+	  src/ft_get_place.c \
 
 OBJ = *.o
 

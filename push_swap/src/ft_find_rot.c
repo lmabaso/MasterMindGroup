@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stack_push_op.c                                 :+:      :+:    :+:   */
+/*   ft_find_rot.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmabaso <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/22 12:27:28 by lmabaso           #+#    #+#             */
-/*   Updated: 2018/08/22 12:28:06 by lmabaso          ###   ########.fr       */
+/*   Created: 2018/08/22 13:15:41 by lmabaso           #+#    #+#             */
+/*   Updated: 2018/08/22 13:17:40 by lmabaso          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-t_list		*ft_pop(t_list **head)
+int				ft_b_rot(int len, int pos, char **rot)
 {
-	t_list	*pop;
-
-	pop = NULL;
-	if (!*head)
-		return (NULL);
-	pop = *head;
-	*head = (*head)->next;
-	pop->next = NULL;
-	return (pop);
+	(pos > len / 2) ? ft_strcpy(*rot, "rrb") : ft_strcpy(*rot, "rb");
+	return (((pos > len / 2) && (len > 2)) ? len - pos : pos);
 }
 
-void		ft_push_to(t_list **dest, t_list **src)
+int				ft_a_rot(int len, int pos, char **rot)
 {
-	ft_lstadd(dest, ft_pop(src));
+	(pos > len / 2) ? ft_strcpy(*rot, "rra") : ft_strcpy(*rot, "ra");
+	return (((pos > len / 2) && (len > 2)) ? len - pos : pos);
 }
