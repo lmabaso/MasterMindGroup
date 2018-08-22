@@ -188,12 +188,12 @@ static void	insert_back_in_a(t_list **a, t_list **b)
 char		*ft_sort(t_list **a, t_list **b)
 {
 	t_moves *best_move;
-	int		optimizer;
 
-	optimizer = (ft_lstlen(*a) > 200)? 50 : 2;
 	while (ft_lstlen(*b) != 2)
-        ft_update(a, b, "pb");
-	while (ft_lstlen(*a) > optimizer)
+	{
+		(ft_first(a) == ft_max(a)) ? ft_update(a, b, "rra") : ft_update(a, b, "pb");
+	}
+	while (ft_lstlen(*a) > 2)
 	{
 		best_move = best_way_from_a_to_b(a, b);
 		while (best_move->common_moves)
@@ -205,7 +205,6 @@ char		*ft_sort(t_list **a, t_list **b)
         ft_update(a, b, "pb");
 		free_moves(best_move);
 	}
-	// insert_leftover_to_b(a, b);
 	insert_back_in_a(a, b);
     return ("ok");
 }

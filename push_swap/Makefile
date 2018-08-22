@@ -11,7 +11,6 @@ SRC = src/ft_verify.c \
 	  src/ft_minmax.c \
 	  src/ft_decisions.c \
 	  src/ft_sort.c \
-	  src/ft_lstsort.c \
 	  src/ft_test.c \
 	  src/ft_update.c \
 
