@@ -58,4 +58,11 @@ int				get_to_be_pushed(t_list **a, t_list **b);
 
 void            ft_update(t_list **a, t_list**b, char *cmd);
 void    		init_check(int ac, char **av, t_list **a, t_list **b);
+
+int				ft_b_rot(int len, int pos, char **rot);
+int				ft_a_rot(int len, int pos, char **rot);
+
+int				ft_place_in_b(t_list **b, int elem, char *rot);
+int				ft_place_in_a(t_list **a, int elem, char *rot);
+
 #endif
