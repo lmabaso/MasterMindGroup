@@ -41,6 +41,10 @@ void                ft_append_data(t_node **head, t_room new_data);
 void		        ft_append_string(t_string** head, char *new_data);
 int                 ft_search_node(t_node* head, char *x);
 void                ft_show_input(t_data *c, t_node *map);
+
+size_t              ft_lst_node_len(t_node *head);
 size_t              ft_lst_str_len(t_string *head);
+void                deleteNode(t_node **head_ref, char *key);
+
 t_string            *ft_astar(t_data *c, t_node *map);
 #endif

@@ -8,6 +8,7 @@ int     main(void)
     t_data  *c;
     t_node  *map;
     int     i;
+    t_string *q;
 
     c = ft_memalloc(sizeof(t_data));
     map = NULL;
@@ -93,7 +94,12 @@ int     main(void)
         c->tubs = c->tubs->next;
     }
     ft_show_input(c, map);
-    ft_astar(c, map);
+    q = ft_astar(c, map);
+    while (q)
+    {
+        ft_putendl(q->str);
+        q = q->next;
+    }
     free(c);
     return (1);
 }

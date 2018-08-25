@@ -1,28 +1,84 @@
 #include "../includes/lem-in.h"
 
+t_node          *ft_as_lowest_f(t_node *head)
+{
+    t_node      *tmp;
+    t_node      *winner;
+
+    tmp = head;
+    winner = ft_memalloc(sizeof(t_node));
+    winner->data = head->data;
+    while (tmp)
+    {
+        if (winner->data.f > tmp->data.f)
+            winner->data = tmp->data;
+        tmp = tmp->next;
+    }
+    return (winner);
+}
+
+#include <stdio.h>
+
 t_string        *ft_astar(t_data *c, t_node *map)
 {
     t_string    *path_to_finish;
     t_node      *openSet;
-    // t_node      *closedSet;
-    // char        *current;
-    // char        *tmp;
-    // t_room      *neighbour;
-    // double      tmpG;
+    t_node      *closedSet;
+    t_node      *current;
+    t_node      *tmp;
+    t_room      *neighbour;
+    double      tmpG;
     t_node      *winner;
-    t_node      *ptr;
+    t_room      element;
 
     openSet = NULL;
+    closedSet = NULL;
     path_to_finish = NULL;
+    
     ft_append_data(&openSet, ft_find_room(map, c->start)->data);
-    while (ft_lst_str_len(openSet) > 0)
+    while (ft_lst_node_len(openSet) > 0)
     {
-        winner = NULL;
-        ptr = openSet;
-        while (ptr)
+        winner = ft_as_lowest_f(openSet);
+        current = winner;
+        if (ft_strequ(current->data.room_num, c->end))
         {
-
-            ptr = ptr->next;
+            tmp = current;
+            ft_append_string(&path_to_finish, tmp->data.room_num);
+            while (tmp->data.previous != NULL)
+            {
+                ft_append_string(&path_to_finish, tmp->data.previous->room_num);
+                tmp->data = *tmp->data.previous;
+            }
+            break ;
+        }
+        deleteNode(&openSet, current->data.room_num);
+        ft_append_data(&closedSet, ft_find_room(map, current->data.room_num)->data);
+        element = ft_find_room(map, current->data.room_num)->data;
+        ft_putendl(element.neighbours->str);
+        while (element.neighbours)
+        {
+            
+            if (!ft_strequ(element.neighbours->str, current->data.previous->room_num))
+            {
+                neighbour = &ft_find_room(map, element.neighbours->str)->data;
+                if (!ft_search_node(closedSet, neighbour->room_num))
+                {
+                    tmpG = current->data.g + 1;
+                    if (ft_search_node(openSet, neighbour->room_num))
+                    {
+                        if (tmpG < neighbour->g)
+                            neighbour->g = tmpG;
+                    }
+                    else
+                    {
+                        neighbour->g = tmpG;
+                        ft_append_data(&openSet, ft_find_room(map, neighbour->room_num)->data);
+                    }
+                }
+            }
+            
+            break ;
+            element.neighbours = element.neighbours->next;
         }
     }
     return (path_to_finish);
