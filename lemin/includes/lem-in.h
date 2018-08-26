@@ -16,10 +16,16 @@ typedef struct      s_data
     t_list          *cells;
     t_string        *tubs;
 }                   t_data;
+typedef struct      s_co
+{
+    int             x;
+    int             y;
+}                   t_co;
 
 typedef struct      s_room
 {
     char            *room_num;
+    t_co            pos;
     double          f;
     double          g;
     double          h;
@@ -47,4 +53,7 @@ size_t              ft_lst_str_len(t_string *head);
 void                deleteNode(t_node **head_ref, char *key);
 
 t_string            *ft_astar(t_data *c, t_node *map);
+t_node              *ft_node_dup(t_node *L1);
+void                ft_get_room(t_node **head, char *room);
+void                ft_add_coordinates(t_node **head, t_list *rooms);
 #endif

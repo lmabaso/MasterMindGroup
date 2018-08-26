@@ -14,6 +14,16 @@ int ft_search_node(t_node *head, char *x)
     return (0);
 }
 
+void    ft_get_room(t_node **head, char *room)
+{
+    while ((*head) != NULL)
+    {
+        if (ft_strequ((*head)->data.room_num, room))
+            return ;
+        (*head) = (*head)->next;
+    }
+}
+
 t_node *ft_find_room(t_node *head, char *room)
 {
     t_node* current;

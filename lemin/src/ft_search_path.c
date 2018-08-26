@@ -30,6 +30,7 @@ t_string        *ft_astar(t_data *c, t_node *map)
     double      tmpG;
     t_node      *winner;
     t_room      element;
+    t_string    *tmpNei;
 
     openSet = NULL;
     closedSet = NULL;
@@ -54,13 +55,14 @@ t_string        *ft_astar(t_data *c, t_node *map)
         deleteNode(&openSet, current->data.room_num);
         ft_append_data(&closedSet, ft_find_room(map, current->data.room_num)->data);
         element = ft_find_room(map, current->data.room_num)->data;
-        ft_putendl(element.neighbours->str);
-        while (element.neighbours)
+        
+        tmpNei = element.neighbours;
+        while (tmpNei)
         {
-            
-            if (!ft_strequ(element.neighbours->str, current->data.previous->room_num))
+            if (current->data.previous && current->data.previous->previous && !ft_strequ(tmpNei->str, current->data.previous->previous->room_num))
             {
-                neighbour = &ft_find_room(map, element.neighbours->str)->data;
+                
+                neighbour = &ft_find_room(map, tmpNei->str)->data;
                 if (!ft_search_node(closedSet, neighbour->room_num))
                 {
                     tmpG = current->data.g + 1;
@@ -74,11 +76,19 @@ t_string        *ft_astar(t_data *c, t_node *map)
                         neighbour->g = tmpG;
                         ft_append_data(&openSet, ft_find_room(map, neighbour->room_num)->data);
                     }
+                    // neighbour->h = 
                 }
+            }
+            else
+            {
+                neighbour = &ft_find_room(map, tmpNei->str)->data;
+
+                ft_putendl(tmpNei->str);
+                ft_putchar('s');
             }
             
             break ;
-            element.neighbours = element.neighbours->next;
+            tmpNei = tmpNei->next;
         }
     }
     return (path_to_finish);

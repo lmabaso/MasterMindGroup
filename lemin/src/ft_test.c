@@ -2,6 +2,8 @@
 
 void    ft_show_input(t_data *c, t_node *map)
 {
+    t_string *tmp;
+
     ft_putendl("++++++Data+++++++");
     ft_putnbr(c->nb_ants);
     ft_putchar('\n');
@@ -13,13 +15,19 @@ void    ft_show_input(t_data *c, t_node *map)
     while (map)
     {
         ft_putstr("Room: ");
-        ft_putendl(map->data.room_num);
+        ft_putstr(map->data.room_num);
+        ft_putstr("                 ");
+        ft_putnbr(map->data.pos.x);
+        ft_putstr(" ");
+        ft_putnbr(map->data.pos.y);
+        ft_putstr("\n");
         ft_putstr("Room links: ");
-        while (map->data.neighbours)
+        tmp = map->data.neighbours;
+        while (tmp)
         {
-            ft_putstr(map->data.neighbours->str);
-            map->data.neighbours = map->data.neighbours->next;
-            if (map->data.neighbours)
+            ft_putstr(tmp->str);
+            tmp =tmp->next;
+            if (tmp)
                 ft_putstr(" and ");
         }
         ft_putchar('\n');

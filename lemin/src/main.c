@@ -9,6 +9,7 @@ int     main(void)
     t_node  *map;
     int     i;
     t_string *q;
+    t_room  tmpr;
 
     c = ft_memalloc(sizeof(t_data));
     map = NULL;
@@ -17,14 +18,32 @@ int     main(void)
     line = NULL;
     while (get_next_line(0, &line))
     {
+        ft_putendl("liberty");
         if (count == 0)
-            c->nb_ants = ft_atoi(line);
-        else if (ft_strequ(line, "##start"))
         {
+            c->nb_ants = ft_atoi(line);
+            count++;
+            continue ;
+        }
+        tmp = ft_strsplit(line, ' ');
+        if (ft_double_ptr_len((void **)tmp) == 3)
+        {
+            tmpr.room_num = ft_strdup(tmp[0]);
+            tmpr.pos.x = ft_atoi(tmp[1]);
+            tmpr.pos.y = ft_atoi(tmp[2]);
+            ft_lstadd(&c->cells, ft_lstnew(&tmpr, sizeof(t_room)));
+        }
+        else if (line && ft_strequ(line, "##start"))
+        {
+             ft_putendl("liberty===================");
             free(line);
             get_next_line(0, &line);
             tmp = ft_strsplit(line, ' ');
             c->start = ft_strdup(tmp[0]);
+            tmpr.room_num = ft_strdup(tmp[0]);
+            tmpr.pos.x = ft_atoi(tmp[1]);
+            tmpr.pos.y = ft_atoi(tmp[2]);
+            ft_lstadd(&c->cells, ft_lstnew(&tmpr, sizeof(t_room)));
             i = 0;
             while (tmp[i])
             {
@@ -40,6 +59,10 @@ int     main(void)
             get_next_line(0, &line);
             tmp = ft_strsplit(line, ' ');
             c->end = ft_strdup(tmp[0]);
+            tmpr.room_num = ft_strdup(tmp[0]);
+            tmpr.pos.x = ft_atoi(tmp[1]);
+            tmpr.pos.y = ft_atoi(tmp[2]);
+            ft_lstadd(&c->cells, ft_lstnew(&tmpr, sizeof(t_room)));
             i = 0;
             while (tmp[i])
             {
@@ -93,6 +116,8 @@ int     main(void)
         }
         c->tubs = c->tubs->next;
     }
+    ft_putnbr(ft_lstlen(c->cells));
+    ft_add_coordinates(&map, c->cells);
     ft_show_input(c, map);
     q = ft_astar(c, map);
     while (q)
