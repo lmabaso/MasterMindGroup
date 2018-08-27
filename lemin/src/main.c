@@ -144,7 +144,7 @@ int     main(void)
         q = q->next;
     }
     free(c);
-    // while (1)
-    //     ;
+    while (1)
+        ;
     return (1);
 }

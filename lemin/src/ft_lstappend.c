@@ -78,15 +78,18 @@ t_node      *copy(t_node *L1)
 
 void deleteNode(t_node **head_ref, char *key)
 {
-    t_node* temp = *head_ref, *prev;
- 
+    t_node  *temp;
+    t_node  *prev;
+
+    temp = *head_ref;
+    prev = NULL;
     if (temp != NULL && ft_strequ(temp->data.room_num, key))
     {
         *head_ref = temp->next;
         free(temp); 
-        return;
+        return ;
     }
- 
+
     while (temp != NULL && !ft_strequ(temp->data.room_num, key))
     {
         prev = temp;

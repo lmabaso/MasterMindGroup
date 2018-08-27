@@ -11,10 +11,29 @@ t_node          *ft_as_lowest_f(t_node *head)
     while (tmp)
     {
         if (winner->data.f > tmp->data.f)
+        {
             winner->data = tmp->data;
+            // winner->data.previous = tmp->data.previous;
+        }
+            
         tmp = tmp->next;
     }
     return (winner);
+}
+
+void    ft_node_free(t_node **head)
+{
+    t_node  *current;
+    t_node  *next;
+
+    current = *head;
+    while (current != NULL)
+    {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    *head = NULL;
 }
 
 #include <stdio.h>
@@ -47,7 +66,6 @@ t_string        *ft_astar(t_data *c, t_node *map)
             ft_append_string(&path_to_finish, tmp->data.room_num);
             while (tmp->data.previous != NULL)
             {
-                ft_putstr("test");
                 ft_append_string(&path_to_finish, tmp->data.previous->room_num);
                 tmp->data = *tmp->data.previous;
             }
@@ -56,11 +74,12 @@ t_string        *ft_astar(t_data *c, t_node *map)
         deleteNode(&openSet, current->data.room_num);
         ft_append_data(&closedSet, ft_find_room(map, current->data.room_num)->data);
         element = ft_find_room(map, current->data.room_num)->data;
-        
         tmpNei = element.neighbours;
         while (tmpNei)
         {
             neighbour = &ft_find_room(map, tmpNei->str)->data;
+            neighbour->previous = &current->data;
+
             if (!ft_search_node(closedSet, neighbour->room_num))
             {
                 tmpG = current->data.g + 1;
@@ -70,18 +89,14 @@ t_string        *ft_astar(t_data *c, t_node *map)
                         neighbour->g = tmpG;
                 }
                 else
-                {
                     neighbour->g = tmpG;
-                    ft_append_data(&openSet, ft_find_room(map, neighbour->room_num)->data);
-                }
                 neighbour->h = ft_get_distance(neighbour->pos, ft_find_room(map, c->end)->data.pos);
                 neighbour->f = neighbour->g + neighbour->h;
-                neighbour->previous = &current->data;
+                ft_append_data(&openSet, ft_find_room(map, neighbour->room_num)->data);
             }
-            ft_putendl(tmpNei->str);
-            ft_putchar('s');
             tmpNei = tmpNei->next;
         }
     }
+    // ft_node_free(&closedSet);
     return (path_to_finish);
 }
