@@ -47,6 +47,7 @@ t_string        *ft_astar(t_data *c, t_node *map)
             ft_append_string(&path_to_finish, tmp->data.room_num);
             while (tmp->data.previous != NULL)
             {
+                ft_putstr("test");
                 ft_append_string(&path_to_finish, tmp->data.previous->room_num);
                 tmp->data = *tmp->data.previous;
             }
@@ -59,35 +60,26 @@ t_string        *ft_astar(t_data *c, t_node *map)
         tmpNei = element.neighbours;
         while (tmpNei)
         {
-            if (current->data.previous && current->data.previous->previous && !ft_strequ(tmpNei->str, current->data.previous->previous->room_num))
+            neighbour = &ft_find_room(map, tmpNei->str)->data;
+            if (!ft_search_node(closedSet, neighbour->room_num))
             {
-                
-                neighbour = &ft_find_room(map, tmpNei->str)->data;
-                if (!ft_search_node(closedSet, neighbour->room_num))
+                tmpG = current->data.g + 1;
+                if (ft_search_node(openSet, neighbour->room_num))
                 {
-                    tmpG = current->data.g + 1;
-                    if (ft_search_node(openSet, neighbour->room_num))
-                    {
-                        if (tmpG < neighbour->g)
-                            neighbour->g = tmpG;
-                    }
-                    else
-                    {
+                    if (tmpG < neighbour->g)
                         neighbour->g = tmpG;
-                        ft_append_data(&openSet, ft_find_room(map, neighbour->room_num)->data);
-                    }
-                    // neighbour->h = 
                 }
+                else
+                {
+                    neighbour->g = tmpG;
+                    ft_append_data(&openSet, ft_find_room(map, neighbour->room_num)->data);
+                }
+                neighbour->h = ft_get_distance(neighbour->pos, ft_find_room(map, c->end)->data.pos);
+                neighbour->f = neighbour->g + neighbour->h;
+                neighbour->previous = &current->data;
             }
-            else
-            {
-                neighbour = &ft_find_room(map, tmpNei->str)->data;
-
-                ft_putendl(tmpNei->str);
-                ft_putchar('s');
-            }
-            
-            break ;
+            ft_putendl(tmpNei->str);
+            ft_putchar('s');
             tmpNei = tmpNei->next;
         }
     }

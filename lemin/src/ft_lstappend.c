@@ -213,25 +213,38 @@ void		ft_append(t_node** head, char *new_data)
     return ;
 }
 
+int         ft_is_dup(t_string *node, char *to_find)
+{
+    while (node)
+    {
+        if (ft_strequ(node->str, to_find))
+            return (1);
+        node = node->next;
+    }
+    return (0);
+}
+
 void        ft_add_neigbour(t_node **head, char *room, char *neighbour)
 {
     t_node *tmp;
     
     tmp = ft_find_room(*head, room);
-    ft_append_string(&tmp->data.neighbours, neighbour);
+    if (!ft_is_dup(tmp->data.neighbours, neighbour))
+        ft_append_string(&tmp->data.neighbours, neighbour);
 }
 
-void        ft_add_coordinates(t_node **head, t_list *rooms)
+void        ft_add_coordinates(t_node **head, t_node *rooms)
 {
     t_node *tmp;
-    t_room *tmpr;
+    t_node *tmpr;
     
-    while (rooms)
+    tmpr = rooms;
+    while (tmpr)
     {
-        tmpr = rooms->content;
-        tmp = ft_find_room(*head, tmpr->room_num);
-        tmp->data.pos.x = tmpr->pos.x;
-        tmp->data.pos.y = tmpr->pos.y;
-        rooms = rooms->next;
+        ft_putendl("liberty");
+        tmp = ft_find_room(*head, tmpr->data.room_num);
+        tmp->data.pos.x = tmpr->data.pos.x;
+        tmp->data.pos.y = tmpr->data.pos.y;
+        tmpr = tmpr->next;
     }
 }

@@ -8,14 +8,6 @@ typedef struct      s_string
     struct s_string *next;
 }                   t_string;
 
-typedef struct      s_data
-{
-    int             nb_ants;
-    char            *start;
-    char            *end;
-    t_list          *cells;
-    t_string        *tubs;
-}                   t_data;
 typedef struct      s_co
 {
     int             x;
@@ -40,6 +32,15 @@ typedef struct      s_node
     struct s_node   *next;
 }                   t_node;
 
+typedef struct      s_data
+{
+    int             nb_ants;
+    char            *start;
+    char            *end;
+    t_node          *cells;
+    t_string        *tubs;
+}                   t_data;
+
 void                ft_add_neigbour(t_node **head, char *room, char *neighbour);
 t_node              *ft_find_room(t_node *head, char *room);
 void		        ft_append(t_node** head, char *new_data);
@@ -55,5 +56,7 @@ void                deleteNode(t_node **head_ref, char *key);
 t_string            *ft_astar(t_data *c, t_node *map);
 t_node              *ft_node_dup(t_node *L1);
 void                ft_get_room(t_node **head, char *room);
-void                ft_add_coordinates(t_node **head, t_list *rooms);
+void                ft_add_coordinates(t_node **head, t_node *rooms);
+
+double              ft_get_distance(t_co a, t_co b);
 #endif
