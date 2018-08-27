@@ -61,4 +61,5 @@ void                ft_add_coordinates(t_node **head, t_node *rooms);
 double              ft_get_distance(t_co a, t_co b);
 
 void                ft_node_str_free(t_string **head);
+void                ft_reverse(t_string **head_ref);
 #endif

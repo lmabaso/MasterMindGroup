@@ -98,5 +98,6 @@ t_string        *ft_astar(t_data *c, t_node *map)
         }
     }
     // ft_node_free(&closedSet);
+    ft_reverse(&path_to_finish);
     return (path_to_finish);
 }

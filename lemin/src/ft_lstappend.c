@@ -1,5 +1,20 @@
 #include "../includes/lem-in.h"
 
+void        ft_reverse(t_string **head_ref)
+{
+    t_string  *prev   = NULL;
+    t_string  *current = *head_ref;
+    t_string  *next = NULL;
+    while (current != NULL)
+    {
+        next  = current->next;  
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    *head_ref = prev;
+}
+
 t_string *copy_string(t_string *L1)
 {
      t_string *L2 = 0;
@@ -244,7 +259,6 @@ void        ft_add_coordinates(t_node **head, t_node *rooms)
     tmpr = rooms;
     while (tmpr)
     {
-        ft_putendl("liberty");
         tmp = ft_find_room(*head, tmpr->data.room_num);
         tmp->data.pos.x = tmpr->data.pos.x;
         tmp->data.pos.y = tmpr->data.pos.y;

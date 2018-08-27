@@ -111,7 +111,9 @@ void    ft_refine_links(t_node **map)
         tmp1 = tmp->data.neighbours;
         while (tmp1)
         {
-            ft_add_neigbour(map, tmp1->str, ft_strdup(tmp->data.room_num));
+            (ft_search_node(*map, tmp1->str)) ?
+            ft_add_neigbour(map, tmp1->str, ft_strdup(tmp->data.room_num)) :
+            (ft_append(map, ft_strdup(tmp1->str)), ft_add_neigbour(map, tmp1->str, ft_strdup(tmp->data.room_num)));
             tmp1 = tmp1->next;
         }
         tmp = tmp->next;
@@ -144,7 +146,7 @@ int     main(void)
         q = q->next;
     }
     free(c);
-    while (1)
-        ;
+    // while (1)
+    //     ;
     return (1);
 }
