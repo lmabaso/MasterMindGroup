@@ -120,32 +120,105 @@ void    ft_refine_links(t_node **map)
     }
 }
 
+void		ft_append_ant(t_colony** head, char *new_data)
+{
+    t_colony	*new_node;
+    t_colony	*last;
+
+	new_node = ft_memalloc(sizeof(t_colony));
+	last = *head;
+    new_node->ant.ant_name = new_data;
+    new_node->ant.room = NULL;
+    new_node->next = NULL;
+    if (*head == NULL)
+    {
+        *head = new_node;
+        return ;
+    }
+    while (last->next != NULL)
+        last = last->next;
+    last->next = new_node;
+    return ;
+}
+
+t_colony    *ft_get_ants(t_data *c)
+{
+    t_colony    *ant_farm;
+    int i;
+
+    i = 1;
+    ant_farm = NULL;
+    while (i <= c->nb_ants)
+    {
+        ft_append_ant(&ant_farm, ft_strjoin("L", ft_itoa(i)));
+        i++;
+    }
+    return (ant_farm);
+}
+
+void    ft_get_moving(t_ant mr_ant)
+{
+    while (mr_ant.room)
+    {
+        ft_putstr(mr_ant.ant_name);
+        ft_putchar('-');
+        ft_putstr(mr_ant.room->str);
+        ft_putchar(' ');
+        mr_ant.room = mr_ant.room->next;
+    }
+}
+
+void    ft_move_ants(t_string *route, t_data *c)
+{
+    t_colony *ant_farm;
+    t_colony *tmp;
+
+    ant_farm = ft_get_ants(c);
+    tmp = ant_farm;
+    while (tmp)
+    {
+        tmp->ant.room = route->next;
+        ft_get_moving(tmp->ant);
+        tmp = tmp->next;
+        ft_putchar('\n');
+    }
+}
+
 int     main(void)
 {
     char    *line;
-    t_data  *c;
-    t_node  *map;
-    t_string *q;
+    // t_data  *c;
+    // t_node  *map;
+    // t_string *q;
     t_string *input;
 
-    c = ft_memalloc(sizeof(t_data));
-    map = NULL;
-    line = NULL;
+    // c = ft_memalloc(sizeof(t_data));
+    // map = NULL;
+    // line = NULL;
     while (get_next_line(0, &line))
         ft_append_string(&input, line);
-    ft_process_input(input, c);
-    ft_creat_links(&map, c);
-    ft_refine_links(&map);
-    ft_add_coordinates(&map, c->cells);
-    ft_show_input(c, map);
-    q = ft_astar(c, map);
+    // ft_process_input(input, c);
+    // ft_creat_links(&map, c);
+    // ft_refine_links(&map);
+    // ft_add_coordinates(&map, c->cells);
+    // ft_show_input(c, map);
+    // q = ft_astar(c, map);
+    // ft_get_ants(c);
+    // ft_move_ants(q, c);
     // ft_putnbr(ft_lst_str_len(q));
-    while (q)
-    {
-        ft_putendl(q->str);
-        q = q->next;
-    }
-    free(c);
+    // while (q)
+    // {
+    //     ft_putendl(q->str);
+    //     q = q->next;
+    // }
+    // free(c->cells);
+    // free(c->start);
+    // free(c->end);
+    // free(c->tubs);
+    // free(c);
+    ft_node_str_free(&input);
+    // free(input);
+    // ft_node_str_free(&q);
     // while (1)
     //     ;
     return (1);

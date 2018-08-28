@@ -41,6 +41,18 @@ typedef struct      s_data
     t_string        *tubs;
 }                   t_data;
 
+typedef struct      s_ant
+{
+    char            *ant_name;
+    struct s_string *room;
+}                   t_ant;
+
+typedef struct      s_colony
+{
+    t_ant           ant;
+    struct s_colony *next;
+}                   t_colony;
+
 void                ft_add_neigbour(t_node **head, char *room, char *neighbour);
 t_node              *ft_find_room(t_node *head, char *room);
 void		        ft_append(t_node** head, char *new_data);
