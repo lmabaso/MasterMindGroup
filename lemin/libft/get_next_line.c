@@ -12,50 +12,75 @@
 
 #include "libft.h"
 
-static int	ft_read(int const fd, char **str)
+static int		isnewline(const char *s)
 {
-	char	*buff;
-	char	*tmp;
-	int		readchars;
+	char *str;
 
-	if (!(buff = (char *)malloc(sizeof(*buff) * (BUFF_SIZE + 1))))
-		return (-1);
-	readchars = read(fd, buff, BUFF_SIZE);
-	if (readchars > 0)
-	{
-		buff[readchars] = '\0';
-		tmp = ft_strjoin(*str, buff);
-		free(*str);
-		*str = tmp;
-	}
-	free(buff);
-	return (readchars);
+	if ((str = ft_strchr(s, '\n')))
+		return (1);
+	return (0);
 }
 
-int			get_next_line(const int fd, char **line)
+static char		*keep4later(const char *s)
 {
-	static char	*str = NULL;
-	char		*next_line;
-	int			readchars;
+	char *temp1;
+	char *temp2;
 
-	if ((!str && !(str = (char *)malloc(sizeof(*str)))) ||
-			!line || fd < 0 || BUFF_SIZE < 0)
-		return (-1);
-	next_line = ft_strchr(str, '\n');
-	while (next_line == '\0')
+	if (isnewline(s))
 	{
-		readchars = ft_read(fd, &str);
-		if (readchars < 0)
-			return (-1);
-		if (!readchars && !ft_strlen(str))
-			return (0);
-		if (!readchars)
-			str = ft_strjoin(str, "\n");
-		next_line = ft_strchr(str, '\n');
+		temp2 = (char *)s;
+		temp1 = ft_strchr(s, '\n');
+		temp1++;
+		temp1 = ft_strdup(temp1);
+		free(temp2);
 	}
-	*line = ft_strsub(str, 0, ft_strlen(str) - ft_strlen(next_line));
-	next_line = ft_strdup(next_line + 1);
-	free(str);
-	str = next_line;
+	else
+	{
+		temp1 = ft_strdup("");
+		temp2 = (char *)s;
+		free(temp2);
+	}
+	return (temp1);
+}
+
+static char		*sendtoline(const char *s1)
+{
+	size_t	i;
+	char	*s2;
+
+	i = 0;
+	while (s1[i] != '\n' && s1[i])
+		i++;
+	s2 = ft_strsub(s1, 0, i);
+	return (s2);
+}
+
+int				get_next_line(const int fd, char **line)
+{
+	int			outcome;
+	static char	*leftover = NULL;
+	char		*temp;
+	char		buff[BUFF_SIZE + 1];
+
+	outcome = 0;
+	temp = NULL;
+	if (fd < 0 || BUFF_SIZE <= 0 || !line || read(fd, buff, 0) < 0)
+		return (-1);
+	if (leftover == NULL)
+		leftover = ft_strdup("");
+	while (!(isnewline(leftover)))
+	{
+		outcome = read(fd, buff, BUFF_SIZE);
+		if (outcome == 0)
+			break ;
+		buff[outcome] = '\0';
+		temp = leftover;
+		leftover = ft_strjoin(leftover, buff);
+		free(temp);
+	}
+	if (outcome == 0 && leftover[0] == '\0')
+		return (0);
+	*line = sendtoline(leftover);
+	leftover = keep4later(leftover);
 	return (1);
 }

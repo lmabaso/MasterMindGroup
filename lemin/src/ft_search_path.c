@@ -54,6 +54,7 @@ t_string        *ft_astar(t_data *c, t_node *map)
     openSet = NULL;
     closedSet = NULL;
     path_to_finish = NULL;
+    winner = NULL;
     
     ft_append_data(&openSet, ft_find_room(map, c->start)->data);
     while (ft_lst_node_len(openSet) > 0)
@@ -63,12 +64,14 @@ t_string        *ft_astar(t_data *c, t_node *map)
         if (ft_strequ(current->data.room_num, c->end))
         {
             tmp = current;
+            winner = tmp;
             ft_append_string(&path_to_finish, tmp->data.room_num);
             while (tmp->data.previous != NULL)
             {
                 ft_append_string(&path_to_finish, tmp->data.previous->room_num);
                 tmp->data = *tmp->data.previous;
             }
+            ft_node_free(&winner);
             break ;
         }
         deleteNode(&openSet, current->data.room_num);
@@ -95,9 +98,11 @@ t_string        *ft_astar(t_data *c, t_node *map)
                 ft_append_data(&openSet, ft_find_room(map, neighbour->room_num)->data);
             }
             tmpNei = tmpNei->next;
+
         }
     }
-    // ft_node_free(&closedSet);
+    ft_node_free(&closedSet);
+    ft_node_free(&openSet);
     ft_reverse(&path_to_finish);
     return (path_to_finish);
 }

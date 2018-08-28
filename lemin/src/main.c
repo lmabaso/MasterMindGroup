@@ -16,6 +16,22 @@ void    ft_node_str_free(t_string **head)
     *head = NULL;
 }
 
+void    ft_node_free2(t_node **head)
+{
+    t_node  *current;
+    t_node  *next;
+
+    current = *head;
+    while (current != NULL)
+    {
+        next = current->next;
+        free(current->data.room_num);
+        free(current);
+        current = next;
+    }
+    *head = NULL;
+}
+
 void    ft_process_input(t_string *input, t_data *c)
 {
     t_string *tmp;
@@ -87,6 +103,9 @@ void    ft_creat_links(t_node **map, t_data *c)
             (ft_search_node(*map, s[0])) ?
             ft_add_neigbour(map, s[0], ft_strdup(s[1])) :
             (ft_append(map, ft_strdup(s[0])), ft_add_neigbour(map, s[0], ft_strdup(s[1])));
+            (ft_search_node(*map, s[1])) ?
+            ft_add_neigbour(map, s[1], ft_strdup(s[0])) :
+            (ft_append(map, ft_strdup(s[1])), ft_add_neigbour(map, s[1], ft_strdup(s[0])));
         }
         i = 0;
         while (s[i])
@@ -96,26 +115,6 @@ void    ft_creat_links(t_node **map, t_data *c)
         }
         free(s);
         s = NULL;
-        tmp = tmp->next;
-    }
-}
-
-void    ft_refine_links(t_node **map)
-{
-    t_node *tmp;
-    t_string *tmp1;
-
-    tmp = *map;
-    while (tmp)
-    {
-        tmp1 = tmp->data.neighbours;
-        while (tmp1)
-        {
-            (ft_search_node(*map, tmp1->str)) ?
-            ft_add_neigbour(map, tmp1->str, ft_strdup(tmp->data.room_num)) :
-            (ft_append(map, ft_strdup(tmp1->str)), ft_add_neigbour(map, tmp1->str, ft_strdup(tmp->data.room_num)));
-            tmp1 = tmp1->next;
-        }
         tmp = tmp->next;
     }
 }
@@ -184,40 +183,64 @@ void    ft_move_ants(t_string *route, t_data *c)
     }
 }
 
+void    ft_free_map(t_node **map)
+{
+    t_node *tmp;
+
+    tmp = *map;
+    while (tmp)
+    {
+        ft_node_str_free(&tmp->data.neighbours);
+        tmp = tmp->next;
+    }
+    ft_node_free2(map);
+}
+
 int     main(void)
 {
     char    *line;
-    // t_data  *c;
-    // t_node  *map;
-    // t_string *q;
+    t_data  *c;
+    t_node  *map;
+    t_string *q;
     t_string *input;
 
-    // c = ft_memalloc(sizeof(t_data));
-    // map = NULL;
-    // line = NULL;
+    c = ft_memalloc(sizeof(t_data));
+    map = NULL;
+    line = NULL;
     while (get_next_line(0, &line))
         ft_append_string(&input, line);
-    // ft_process_input(input, c);
-    // ft_creat_links(&map, c);
-    // ft_refine_links(&map);
-    // ft_add_coordinates(&map, c->cells);
-    // ft_show_input(c, map);
-    // q = ft_astar(c, map);
+    ft_process_input(input, c);
+    
+    ft_node_str_free(&input);
+    free(input);
+    
+    ft_creat_links(&map, c);
+    ft_add_coordinates(&map, c->cells);
+    ft_show_input(c, map);
+    q = ft_astar(c, map);
+    input = NULL;
+    input = q;
     // ft_get_ants(c);
     // ft_move_ants(q, c);
     // ft_putnbr(ft_lst_str_len(q));
-    // while (q)
-    // {
-    //     ft_putendl(q->str);
-    //     q = q->next;
-    // }
-    // free(c->cells);
-    // free(c->start);
-    // free(c->end);
-    // free(c->tubs);
-    // free(c);
-    ft_node_str_free(&input);
+    while (q)
+    {
+        ft_putendl(q->str);
+        q = q->next;
+    }
+    // ft_node_str_free(&input);
     // free(input);
+    // free(c->cells);
+    
+    free(c->start);
+    free(c->end);
+    ft_node_str_free(&c->tubs);
+    ft_node_free2(&c->cells);
+    free(c);
+    
+    ft_free_map(&map);
+    // ft_node_str_free(&q);
+    // free(map);
     // ft_node_str_free(&q);
     // while (1)
     //     ;

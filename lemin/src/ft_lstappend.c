@@ -147,7 +147,7 @@ void		ft_append_string(t_string** head, char *new_data)
     t_string	*new_node;
     t_string	*last;
 
-	new_node = ft_memalloc(sizeof(t_node));
+	new_node = ft_memalloc(sizeof(t_string));
 	last = *head;
     new_node->str = new_data;
     new_node->next = NULL;

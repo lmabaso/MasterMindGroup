@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "lem-in.h": "c"
+        "lem-in.h": "c",
+        "stdio.h": "c"
     }
 }
