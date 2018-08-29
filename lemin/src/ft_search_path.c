@@ -65,10 +65,10 @@ t_string        *ft_astar(t_data *c, t_node *map)
         {
             tmp = current;
             winner = tmp;
-            ft_append_string(&path_to_finish, tmp->data.room_num);
+            ft_append_string(&path_to_finish, ft_strdup(tmp->data.room_num));
             while (tmp->data.previous != NULL)
             {
-                ft_append_string(&path_to_finish, tmp->data.previous->room_num);
+                ft_append_string(&path_to_finish, ft_strdup(tmp->data.previous->room_num));
                 tmp->data = *tmp->data.previous;
             }
             ft_node_free(&winner);

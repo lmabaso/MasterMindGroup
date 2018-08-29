@@ -119,6 +119,26 @@ void    ft_creat_links(t_node **map, t_data *c)
     }
 }
 
+void		ft_trans_ant(t_colony** head, t_colony *new_data)
+{
+    t_colony	*new_node;
+    t_colony	*last;
+
+	new_node = ft_memalloc(sizeof(t_colony));
+	last = *head;
+    new_node = new_data;
+    new_node->next = NULL;
+    if (*head == NULL)
+    {
+        *head = new_node;
+        return ;
+    }
+    while (last->next != NULL)
+        last = last->next;
+    last->next = new_node;
+    return ;
+}
+
 void		ft_append_ant(t_colony** head, char *new_data)
 {
     t_colony	*new_node;
@@ -196,6 +216,33 @@ void    ft_free_map(t_node **map)
     ft_node_free2(map);
 }
 
+void    ft_assign_routs(t_colony *ants, t_string *da_wae)
+{
+    while (ants)
+    {
+        ants->ant.room = da_wae;
+        ants = ants->next;
+    }
+}
+
+t_colony		*ft_pop(t_colony **head)
+{
+	t_colony	*pop;
+
+	pop = NULL;
+	if (!*head)
+		return (NULL);
+	pop = *head;
+	*head = (*head)->next;
+	pop->next = NULL;
+	return (pop);
+}
+
+void		ft_push_to(t_colony **dest, t_colony **src)
+{
+	ft_trans_ant(dest, ft_pop(src));
+}
+
 int     main(void)
 {
     char    *line;
@@ -203,10 +250,14 @@ int     main(void)
     t_node  *map;
     t_string *q;
     t_string *input;
+    t_colony *ants_in_start;
+    t_colony *ants_in_maize;
+
 
     c = ft_memalloc(sizeof(t_data));
     map = NULL;
     line = NULL;
+    ants_in_maize = NULL;
     while (get_next_line(0, &line))
         ft_append_string(&input, line);
     ft_process_input(input, c);
@@ -218,16 +269,17 @@ int     main(void)
     ft_add_coordinates(&map, c->cells);
     ft_show_input(c, map);
     q = ft_astar(c, map);
-    input = NULL;
-    input = q;
-    // ft_get_ants(c);
+
+    ants_in_start =  ft_get_ants(c);
+    ft_assign_routs(ants_in_start, q);
+    while (ants_in_maize || ants_in_start)
+    {
+        ft_putendl(ants_in_start->ant.room->str);
+        ants_in_start = ants_in_start->next;
+    }
     // ft_move_ants(q, c);
     // ft_putnbr(ft_lst_str_len(q));
-    while (q)
-    {
-        ft_putendl(q->str);
-        q = q->next;
-    }
+    
     // ft_node_str_free(&input);
     // free(input);
     // free(c->cells);
@@ -239,10 +291,9 @@ int     main(void)
     free(c);
     
     ft_free_map(&map);
-    // ft_node_str_free(&q);
+    ft_node_str_free(&q);
     // free(map);
     // ft_node_str_free(&q);
-    // while (1)
-    //     ;
+
     return (1);
 }
