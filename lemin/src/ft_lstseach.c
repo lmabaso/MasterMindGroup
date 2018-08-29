@@ -37,3 +37,17 @@ t_node *ft_find_room(t_node *head, char *room)
     }
     return (NULL);
 }
+
+int     ft_search(t_string *str, char *to_find)
+{
+    t_string *tmp;
+
+    tmp = str;
+    while (tmp)
+    {
+        if (ft_strequ(tmp->str, to_find))
+            return (1);
+        tmp = tmp->next;
+    }
+    return (0);
+}

@@ -1,0 +1,36 @@
+#include "../includes/lem-in.h"
+
+int         ft_is_dup(t_string *node, char *to_find)
+{
+    while (node)
+    {
+        if (ft_strequ(node->str, to_find))
+            return (1);
+        node = node->next;
+    }
+    return (0);
+}
+
+void        ft_add_neigbour(t_node **head, char *room, char *neighbour)
+{
+    t_node *tmp;
+    
+    tmp = ft_find_room(*head, room);
+    if (!ft_is_dup(tmp->data.neighbours, neighbour))
+        ft_append_string(&tmp->data.neighbours, neighbour);
+}
+
+void        ft_add_coordinates(t_node **head, t_node *rooms)
+{
+    t_node *tmp;
+    t_node *tmpr;
+    
+    tmpr = rooms;
+    while (tmpr)
+    {
+        tmp = ft_find_room(*head, tmpr->data.room_num);
+        tmp->data.pos.x = tmpr->data.pos.x;
+        tmp->data.pos.y = tmpr->data.pos.y;
+        tmpr = tmpr->next;
+    }
+}

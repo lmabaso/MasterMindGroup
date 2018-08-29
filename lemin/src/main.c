@@ -1,37 +1,5 @@
 #include "../includes/lem-in.h"
 
-void    ft_node_str_free(t_string **head)
-{
-    t_string  *current;
-    t_string  *next;
-
-    current = *head;
-    while (current != NULL)
-    {
-        next = current->next;
-        free(current->str);
-        free(current);
-        current = next;
-    }
-    *head = NULL;
-}
-
-void    ft_node_free2(t_node **head)
-{
-    t_node  *current;
-    t_node  *next;
-
-    current = *head;
-    while (current != NULL)
-    {
-        next = current->next;
-        free(current->data.room_num);
-        free(current);
-        current = next;
-    }
-    *head = NULL;
-}
-
 void    ft_process_input(t_string *input, t_data *c)
 {
     t_string *tmp;
@@ -44,9 +12,25 @@ void    ft_process_input(t_string *input, t_data *c)
     start = 0;
     end = 0;
     tmp = input;
-    ft_isnumber(tmp->str) ?
-    (c->nb_ants = ft_atoi(tmp->str) , tmp = tmp->next) :
-    (ft_node_str_free(&input), free(c), ft_putendl("error"), exit(1));
+    if (ft_isnumber(tmp->str))
+    {
+        c->nb_ants = ft_atoi(tmp->str);;
+        tmp = tmp->next;
+    }
+    else
+    {
+        ft_node_str_free(&input);
+        free(c);
+        ft_putendl("error");
+        exit(1);
+    }
+    if (c->nb_ants == 0 || ft_dup(input) || !ft_search(input, "##start") || !ft_search(input, "##end"))
+    {
+        ft_putendl("error");
+        ft_node_str_free(&input);
+        free(c);
+        exit(1);
+    }
     while (tmp)
     {
         if (!ft_strequ(tmp->str, "##start") && !ft_strequ(tmp->str, "##end"))
@@ -54,15 +38,25 @@ void    ft_process_input(t_string *input, t_data *c)
             s = ft_strsplit(tmp->str, ' ');
             if (ft_double_ptr_len((void **)s) == 3)
             {
-                (start == 1) ? c->start = ft_strdup(s[0]) : c->start; 
-                (end == 1) ? c->end = ft_strdup(s[0]) : c->end;
+                if (start == 1)
+                {
+                    c->start = ft_strdup(s[0]);
+                }
+                if (end == 1)
+                {
+                    c->end = ft_strdup(s[0]);
+                }
                 tmpr.room_num = ft_strdup(s[0]);
                 tmpr.pos.x = ft_atoi(s[1]);
                 tmpr.pos.y = ft_atoi(s[2]);
                 ft_append_data(&c->cells, tmpr);
-                // ft_lstadd(&c->cells, ft_lstnew(&tmpr, sizeof(t_room)));
-                start = 0;
-                end = 0;
+            }
+            else if (!ft_strchr(tmp->str, '-'))
+            {
+                ft_putendl("error");
+                ft_node_str_free(&input);
+                free(c);
+                exit(1);
             }
             i = 0;
             while (s[i])
@@ -82,8 +76,28 @@ void    ft_process_input(t_string *input, t_data *c)
     {
         if (ft_strchr(tmp->str, '-'))
             ft_append_string(&c->tubs, ft_strdup(tmp->str));
-        else
+        else if (ft_is_only_space(tmp->str))
             break ;
+        else
+        {
+            ft_putendl("error2");
+            ft_node_str_free(&input);
+            free(c);
+            exit(1);
+        }
+        tmp = tmp->next;
+    }
+    if (!c->tubs || !c->cells || ft_same_co(c->cells) || !c->start || !c->end)
+    {
+        ft_putendl("error1");
+        ft_node_str_free(&input);
+        free(c);
+        exit(1);
+    }
+    tmp = input;
+    while (tmp)
+    {
+        ft_putendl(tmp->str);
         tmp = tmp->next;
     }
 }
@@ -203,19 +217,6 @@ void    ft_move_ants(t_string *route, t_data *c)
     }
 }
 
-void    ft_free_map(t_node **map)
-{
-    t_node *tmp;
-
-    tmp = *map;
-    while (tmp)
-    {
-        ft_node_str_free(&tmp->data.neighbours);
-        tmp = tmp->next;
-    }
-    ft_node_free2(map);
-}
-
 void    ft_assign_routs(t_colony *ants, t_string *da_wae)
 {
     while (ants)
@@ -275,48 +276,6 @@ void        ft_display(t_colony *ants)
     ft_putchar('\n');
 }
 
-void        ft_delete_ant(t_colony **head_ref, char *key)
-{
-    t_colony  *temp;
-    t_colony  *prev;
-
-    temp = *head_ref;
-    prev = NULL;
-    if (temp != NULL && ft_strequ(temp->ant.room->str, key))
-    {
-        *head_ref = temp->next;
-        free(temp->ant.ant_name);
-        free(temp);
-        return ;
-    }
-    ft_putendl("test");
-    while (temp != NULL && !ft_strequ(temp->ant.room->str, key))
-    {
-        prev = temp;
-        temp = temp->next;
-    }
-    if (temp == NULL)
-        return ;
-    prev->next = temp->next;
-    free(temp->ant.ant_name);
-    free(temp);
-}
-
-void    ft_remove_ants_at_end(t_colony **ants_in_maize, t_data *c)
-{
-    t_colony *tmp;
-
-    tmp = *ants_in_maize;
-    while (tmp)
-    {
-        if (ft_strequ(tmp->ant.room->str, c->end))
-        {
-            ft_delete_ant(ants_in_maize, c->end);
-        }
-        tmp = tmp->next;
-    }
-}
-
 int     ft_bouncer(t_colony *ft_move_ants_in_maize, char *room)
 {
     t_colony *tmp;
@@ -355,7 +314,7 @@ int     main(void)
     
     ft_creat_links(&map, c);
     ft_add_coordinates(&map, c->cells);
-    ft_show_input(c, map);
+    // ft_show_input(c, map);
     q = ft_astar(c, map);
 
     ants_in_start =  ft_get_ants(c);
