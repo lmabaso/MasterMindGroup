@@ -240,7 +240,95 @@ t_colony		*ft_pop(t_colony **head)
 
 void		ft_push_to(t_colony **dest, t_colony **src)
 {
-	ft_trans_ant(dest, ft_pop(src));
+    t_colony *tmp;
+
+    tmp = ft_pop(src);
+    tmp->ant.room = tmp->ant.room->next;
+	ft_trans_ant(dest, tmp);
+}
+
+void        ft_move_ants_in_maize(t_colony **ants)
+{
+    t_colony *tmp;
+
+    tmp = *ants;
+    while (tmp)
+    {
+        tmp->ant.room = tmp->ant.room->next;
+        tmp = tmp->next;
+    }
+}
+
+void        ft_display(t_colony *ants)
+{
+    t_colony *tmp;
+
+    tmp = ants;
+    while (tmp)
+    {
+        ft_putstr(tmp->ant.ant_name);
+        ft_putchar('-');
+        ft_putstr(tmp->ant.room->str);
+        ft_putchar(' ');
+        tmp = tmp->next;
+    }
+    ft_putchar('\n');
+}
+
+void        ft_delete_ant(t_colony **head_ref, char *key)
+{
+    t_colony  *temp;
+    t_colony  *prev;
+
+    temp = *head_ref;
+    prev = NULL;
+    if (temp != NULL && ft_strequ(temp->ant.room->str, key))
+    {
+        *head_ref = temp->next;
+        free(temp->ant.ant_name);
+        free(temp);
+        return ;
+    }
+    ft_putendl("test");
+    while (temp != NULL && !ft_strequ(temp->ant.room->str, key))
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL)
+        return ;
+    prev->next = temp->next;
+    free(temp->ant.ant_name);
+    free(temp);
+}
+
+void    ft_remove_ants_at_end(t_colony **ants_in_maize, t_data *c)
+{
+    t_colony *tmp;
+
+    tmp = *ants_in_maize;
+    while (tmp)
+    {
+        if (ft_strequ(tmp->ant.room->str, c->end))
+        {
+            ft_delete_ant(ants_in_maize, c->end);
+        }
+        tmp = tmp->next;
+    }
+}
+
+int     ft_bouncer(t_colony *ft_move_ants_in_maize, char *room)
+{
+    t_colony *tmp;
+    
+    tmp = ft_move_ants_in_maize;
+    while (tmp)
+    {
+        if (ft_strequ(tmp->ant.room->str, room))
+            return (0);
+        tmp = tmp->next;
+    }
+    return (1);
 }
 
 int     main(void)
@@ -272,28 +360,28 @@ int     main(void)
 
     ants_in_start =  ft_get_ants(c);
     ft_assign_routs(ants_in_start, q);
-    while (ants_in_maize || ants_in_start)
+    ft_push_to(&ants_in_maize, &ants_in_start);
+    ft_display(ants_in_maize);
+    while (ants_in_maize)
     {
-        ft_putendl(ants_in_start->ant.room->str);
-        ants_in_start = ants_in_start->next;
+        ft_move_ants_in_maize(&ants_in_maize);
+        if (ft_bouncer(ants_in_maize, q->next->str))
+        {
+            if (ants_in_start)
+                ft_push_to(&ants_in_maize, &ants_in_start);
+        }
+        ft_display(ants_in_maize);
+        ft_remove_ants_at_end(&ants_in_maize, c);
     }
-    // ft_move_ants(q, c);
-    // ft_putnbr(ft_lst_str_len(q));
-    
-    // ft_node_str_free(&input);
-    // free(input);
-    // free(c->cells);
-    
+
+
+
     free(c->start);
     free(c->end);
     ft_node_str_free(&c->tubs);
     ft_node_free2(&c->cells);
     free(c);
-    
     ft_free_map(&map);
     ft_node_str_free(&q);
-    // free(map);
-    // ft_node_str_free(&q);
-
     return (1);
 }
