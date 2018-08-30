@@ -57,8 +57,10 @@ t_string        *ft_astar(t_data *c, t_node *map)
     winner = NULL;
     
     ft_append_data(&openSet, ft_find_room(map, c->start)->data);
+   
     while (ft_lst_node_len(openSet) > 0)
     {
+        
         winner = ft_as_lowest_f(openSet);
         current = winner;
         if (ft_strequ(current->data.room_num, c->end))
@@ -98,7 +100,6 @@ t_string        *ft_astar(t_data *c, t_node *map)
                 ft_append_data(&openSet, ft_find_room(map, neighbour->room_num)->data);
             }
             tmpNei = tmpNei->next;
-
         }
     }
     ft_node_free(&closedSet);

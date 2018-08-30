@@ -15,6 +15,31 @@ void        ft_reverse(t_string **head_ref)
     *head_ref = prev;
 }
 
+void deleteStr(t_string **head_ref, char *key)
+{
+    t_string  *temp;
+    t_string  *prev;
+
+    temp = *head_ref;
+    prev = NULL;
+    if (temp != NULL && ft_strequ(temp->str, key))
+    {
+        *head_ref = temp->next;
+        free(temp); 
+        return ;
+    }
+
+    while (temp != NULL && !ft_strequ(temp->str, key))
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL)
+        return ;
+    prev->next = temp->next;
+    free(temp);
+}
+
 void deleteNode(t_node **head_ref, char *key)
 {
     t_node  *temp;

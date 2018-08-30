@@ -20,17 +20,15 @@ void        ft_add_neigbour(t_node **head, char *room, char *neighbour)
         ft_append_string(&tmp->data.neighbours, neighbour);
 }
 
-void        ft_add_coordinates(t_node **head, t_node *rooms)
+void        ft_add_coordinates(t_node **head, t_node *rooms, char *str)
 {
     t_node *tmp;
     t_node *tmpr;
     
-    tmpr = rooms;
-    while (tmpr)
-    {
-        tmp = ft_find_room(*head, tmpr->data.room_num);
-        tmp->data.pos.x = tmpr->data.pos.x;
-        tmp->data.pos.y = tmpr->data.pos.y;
-        tmpr = tmpr->next;
-    }
+
+    tmp = ft_find_room(*head, str);
+    tmpr = ft_find_room(rooms, str);
+    tmp->data.pos.x = tmpr->data.pos.x;
+    tmp->data.pos.y = tmpr->data.pos.y;
+    tmpr = tmpr->next;
 }

@@ -68,7 +68,7 @@ void                deleteNode(t_node **head_ref, char *key);
 
 t_string            *ft_astar(t_data *c, t_node *map);
 void                ft_get_room(t_node **head, char *room);
-void                ft_add_coordinates(t_node **head, t_node *rooms);
+void                ft_add_coordinates(t_node **head, t_node *rooms, char *str);
 
 double              ft_get_distance(t_co a, t_co b);
 
@@ -90,4 +90,11 @@ void                ft_delete_ant(t_colony **head_ref, char *key);
 void                ft_free_map(t_node **map);
 void                ft_node_free2(t_node **head);
 void                ft_node_str_free(t_string **head);
+
+void                deleteStr(t_string **head_ref, char *key);
+
+int                 ft_error_handle(t_string **input);
+int                 ft_err_pipes(t_string *tmp, t_string **input);
+int                 ft_is_not_eof(t_string *tmp);
+int                 ft_first_check(t_string **tmp);
 #endif

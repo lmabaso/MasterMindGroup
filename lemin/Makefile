@@ -10,6 +10,7 @@ SRC =	src/main.c \
 		src/ft_lst_op.c \
 		src/ft_lst_add.c \
 		src/ft_errors.c \
+		src/ft_errors2.c \
 		src/ft_free_stuff.c \
 
 OBJ = *.o

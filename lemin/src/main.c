@@ -17,22 +17,13 @@ void    ft_process_input(t_string *input, t_data *c)
         c->nb_ants = ft_atoi(tmp->str);;
         tmp = tmp->next;
     }
-    else
-    {
-        ft_node_str_free(&input);
-        free(c);
-        ft_putendl("error");
-        exit(1);
-    }
-    if (c->nb_ants == 0 || ft_dup(input) || !ft_search(input, "##start") || !ft_search(input, "##end"))
-    {
-        ft_putendl("error");
-        ft_node_str_free(&input);
-        free(c);
-        exit(1);
-    }
     while (tmp)
     {
+        if (tmp->str[0] == '#')
+        {
+            if (!ft_strequ(tmp->str, "##start") && !ft_strequ(tmp->str, "##end"))
+                tmp = tmp->next;
+        }
         if (!ft_strequ(tmp->str, "##start") && !ft_strequ(tmp->str, "##end"))
         {
             s = ft_strsplit(tmp->str, ' ');
@@ -74,7 +65,13 @@ void    ft_process_input(t_string *input, t_data *c)
     }
     while (tmp)
     {
-        if (ft_strchr(tmp->str, '-'))
+        if (tmp->str && tmp->str[0] == '#')
+        {
+            ft_putendl(tmp->str);
+            if (!ft_strequ(tmp->str, "##start") && !ft_strequ(tmp->str, "##end"))
+                tmp = tmp->next;
+        }
+        else if (ft_strchr(tmp->str, '-'))
             ft_append_string(&c->tubs, ft_strdup(tmp->str));
         else if (ft_is_only_space(tmp->str))
             break ;
@@ -89,16 +86,10 @@ void    ft_process_input(t_string *input, t_data *c)
     }
     if (!c->tubs || !c->cells || ft_same_co(c->cells) || !c->start || !c->end)
     {
-        ft_putendl("error1");
+        ft_putendl("error");
         ft_node_str_free(&input);
         free(c);
         exit(1);
-    }
-    tmp = input;
-    while (tmp)
-    {
-        ft_putendl(tmp->str);
-        tmp = tmp->next;
     }
 }
 
@@ -114,12 +105,53 @@ void    ft_creat_links(t_node **map, t_data *c)
         s = ft_strsplit(tmp->str, '-');
         if (ft_double_ptr_len((void **)s) == 2)
         {
-            (ft_search_node(*map, s[0])) ?
-            ft_add_neigbour(map, s[0], ft_strdup(s[1])) :
-            (ft_append(map, ft_strdup(s[0])), ft_add_neigbour(map, s[0], ft_strdup(s[1])));
-            (ft_search_node(*map, s[1])) ?
-            ft_add_neigbour(map, s[1], ft_strdup(s[0])) :
-            (ft_append(map, ft_strdup(s[1])), ft_add_neigbour(map, s[1], ft_strdup(s[0])));
+            if (ft_strequ(s[0], s[1]))
+            {
+                ft_putendl("error1");
+                free(c);
+                exit(1);
+            }
+            if (ft_search_node(c->cells, s[0]) && ft_search_node(c->cells, s[1]))
+            {
+                if (ft_search_node(*map, s[0]))
+                {
+                    ft_add_coordinates(map, c->cells, s[0]);
+                    ft_add_neigbour(map, s[0], ft_strdup(s[1]));
+                }
+                else
+                {
+                    ft_append(map, ft_strdup(s[0]));
+                    ft_add_coordinates(map, c->cells, s[0]);
+                    ft_add_neigbour(map, s[0], ft_strdup(s[1]));
+                }
+                if (ft_search_node(*map, s[1]))
+                {
+                    ft_add_coordinates(map, c->cells, s[1]);
+                    ft_add_neigbour(map, s[1], ft_strdup(s[0]));
+                }
+                else
+                {
+                    ft_append(map, ft_strdup(s[1]));
+                    ft_add_coordinates(map, c->cells, s[1]);
+                    ft_add_neigbour(map, s[1], ft_strdup(s[0]));
+                }
+                
+            }
+            else
+            {
+                i = 0;
+                while (s[i])
+                {
+                    free(s[i]);
+                    i++;
+                }
+                free(s);
+                s = NULL;
+                ft_putendl("error1");
+                free(c);
+                exit(1);
+            }
+            
         }
         i = 0;
         while (s[i])
@@ -130,6 +162,12 @@ void    ft_creat_links(t_node **map, t_data *c)
         free(s);
         s = NULL;
         tmp = tmp->next;
+    }
+    if (!ft_search_node(*map, c->start) || !ft_search_node(*map, c->end))
+    {
+        ft_putendl("error");
+        free(c);
+        exit(1);
     }
 }
 
@@ -290,6 +328,7 @@ int     ft_bouncer(t_colony *ft_move_ants_in_maize, char *room)
     return (1);
 }
 
+
 int     main(void)
 {
     char    *line;
@@ -307,16 +346,30 @@ int     main(void)
     ants_in_maize = NULL;
     while (get_next_line(0, &line))
         ft_append_string(&input, line);
+    if (ft_error_handle(&input))
+    {
+        ft_node_str_free(&input);
+        free(c);
+        ft_putendl("error");
+        exit(1);
+    }
+    
     ft_process_input(input, c);
     
     ft_node_str_free(&input);
     free(input);
     
     ft_creat_links(&map, c);
-    ft_add_coordinates(&map, c->cells);
-    // ft_show_input(c, map);
+    
+    ft_show_input(c, map);
     q = ft_astar(c, map);
-
+    if (!q)
+    {
+        ft_node_str_free(&input);
+        free(c);
+        ft_putendl("error");
+        exit(1);
+    }
     ants_in_start =  ft_get_ants(c);
     ft_assign_routs(ants_in_start, q);
     ft_push_to(&ants_in_maize, &ants_in_start);
@@ -332,9 +385,6 @@ int     main(void)
         ft_display(ants_in_maize);
         ft_remove_ants_at_end(&ants_in_maize, c);
     }
-
-
-
     free(c->start);
     free(c->end);
     ft_node_str_free(&c->tubs);
