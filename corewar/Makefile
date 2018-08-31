@@ -2,7 +2,11 @@ NAME	=	asm
 
 SRC		= 	asm_src/main.c \
 			asm_src/ft_init.c \
-			asm_src/ft_free_stuff.c
+			asm_src/ft_free_stuff.c \
+			asm_src/ft_error_check.c \
+			asm_src/ft_lst_funt.c \
+			asm_src/ft_read_proc.c \
+			asm_src/ft_make_encode.c \
 
 			
 OJB		= 	*.o
