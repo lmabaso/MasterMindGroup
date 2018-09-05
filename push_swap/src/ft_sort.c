@@ -6,7 +6,7 @@
 /*   By: lmabaso <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/22 12:40:31 by lmabaso           #+#    #+#             */
-/*   Updated: 2018/08/22 13:42:08 by lmabaso          ###   ########.fr       */
+/*   Updated: 2018/08/28 11:31:34 by lmabaso          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ char			*ft_sort(t_list **a, t_list **b)
 			ft_update(a, b, best_move->common_rot);
 			best_move->common_moves--;
 		}
-		ft_putstr("pros=");
 		process_moves(best_move, a, b);
 		ft_update(a, b, "pb");
 		free_moves(best_move);
