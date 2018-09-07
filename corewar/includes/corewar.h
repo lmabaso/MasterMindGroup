@@ -31,16 +31,6 @@ typedef struct      s_obj
     t_data          entry;
 }                   t_obj;
 
-typedef struct      s_op
-{
-    char            *opcode;
-    int             arg;
-    int             reg;
-    int             instruction;
-    // int             
-
-}                   t_op;
-
 void                ft_init(t_obj *c);
 char                *ft_strfix(char *str);
 void	            ft_init_header(t_obj *c);
@@ -54,5 +44,9 @@ void		        ft_append(t_node** head, t_data new_data);
 
 void                ft_process_input(t_obj *c);
 void	            ft_read_file(t_obj *c, int fdr);
+
 unsigned char       ft_encode(char *arg);
+int                 ft_alloc_size(char *arg);
+
+unsigned char       *ft_sti(char *str);
 #endif

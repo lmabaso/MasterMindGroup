@@ -14,6 +14,7 @@
 ** Toutes les tailles sont en octets.
 ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
 */
+# include <string.h>
 
 #define IND_SIZE				2
 #define REG_SIZE				4
@@ -62,6 +63,18 @@ typedef char	t_arg_type;
 /*
 **
 */
+
+typedef struct		s_op
+{
+	char            *operation;
+	size_t          nbr_args;
+	unsigned char   arg_type[MAX_ARGS_NUMBER];
+	unsigned char   opcode;
+	size_t          nbr_cycle;
+	char			      *comment;
+	unsigned char   encode_byte;
+	unsigned char   is_index;
+}                 t_op;
 
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)

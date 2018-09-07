@@ -6,7 +6,7 @@ int		ft_islabel(char *str)
 	{
 		if (ft_isspace(*str))
 			return (0);
-		if (*str == ':')
+		if (*str == LABEL_CHAR)
 			return (1);
 		str++;
 	}
@@ -85,7 +85,7 @@ void	ft_read_file(t_obj *c, int fdr)
 	while (get_next_line(fdr, &c->line))
 	{
 		c->fixinput = ft_strfix(c->line);
-		if (c->line[0] == '.')
+		if (c->line[0] == NAME_CMD_STRING[0] || c->line[0] == NAME_CMD_STRING[0])
 			ft_init_header(c);
 		else
 			ft_process_input(c);

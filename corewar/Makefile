@@ -7,7 +7,8 @@ SRC		= 	asm_src/main.c \
 			asm_src/ft_lst_funt.c \
 			asm_src/ft_read_proc.c \
 			asm_src/ft_make_encode.c \
-
+			asm_src/ft_alloc_size.c \
+			asm_src/ft_write_op.c \
 			
 OJB		= 	*.o
 
