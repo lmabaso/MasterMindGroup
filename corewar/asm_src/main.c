@@ -42,6 +42,7 @@ int		main(int ac, char **av)
 	fdw = open("test.cor", O_CREAT | O_WRONLY | O_TRUNC);
 	put = ft_sti("r1,r1,%:live,%1");
 	i = 0;
+	ft_putuchar_fd(COREWAR_EXEC_MAGIC , fdw);
 	while (i < ft_alloc_size("r1,r1,%:live,%1") + 2)
 	{
 		ft_putuchar_fd(put[i], fdw);
