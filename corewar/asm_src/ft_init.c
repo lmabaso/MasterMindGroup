@@ -4,11 +4,14 @@ void	ft_init_header(t_obj *c)
 {
 	char		**tmp;
 	int i;
+	char		*tm;
 
-	if (ft_strequ(c->line, NAME_CMD_STRING))
+	if (ft_strstr(c->line, NAME_CMD_STRING))
 	{
+		
 		tmp = ft_strsplit(c->fixinput, ' ');
-		ft_strcat(c->info->prog_name, tmp[1]);
+		tm = ft_strsub(tmp[1], 1, ft_strlen(tmp[1]) - 2);
+		ft_strcat(c->info->prog_name, tm);
 		i = 0;
 		while (tmp[i])
 		{
@@ -17,11 +20,14 @@ void	ft_init_header(t_obj *c)
 		}
 		free(tmp);
 		tmp = NULL;
+		free(tm);
+		tm = NULL;
 	}
-	else if (ft_strequ(c->line, COMMENT_CMD_STRING))
+	else if (ft_strstr(c->line, COMMENT_CMD_STRING))
 	{
 		tmp = ft_strsplit(c->fixinput, ' ');
-		ft_strcat(c->info->comment , tmp[1]);
+		tm = ft_strsub(ft_strchr(c->fixinput, '"') + 1, 0, ft_strlen(ft_strchr(c->fixinput, '"')) - 2);
+		ft_strcat(c->info->comment , tm);
 		i = 0;
 		while (tmp[i])
 		{
@@ -30,6 +36,8 @@ void	ft_init_header(t_obj *c)
 		}
 		free(tmp);
 		tmp = NULL;
+		free(tm);
+		tm = NULL;
 	}
 }
 
