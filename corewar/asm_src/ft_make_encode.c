@@ -26,17 +26,6 @@ unsigned char   ft_encode(char *arg)
         else if (str[i][0] == DIRECT_CHAR)
         {
             if (i == 0)
-                encode += 192;
-            if (i == 1)
-                encode += 48;
-            if (i == 2)
-                encode += 12;
-            if (i == 3)
-                encode += 3;
-        }
-        else
-        {
-            if (i == 0)
                 encode += 128;
             if (i == 1)
                 encode += 32;
@@ -45,6 +34,18 @@ unsigned char   ft_encode(char *arg)
             if (i == 3)
                 encode += 2;
         }
+        else 
+        {
+            if (i == 0)
+                encode += 192;
+            if (i == 1)
+                encode += 48;
+            if (i == 2)
+                encode += 12;
+            if (i == 3)
+                encode += 3;
+        }
+        
         i++;
     }
     return (encode);

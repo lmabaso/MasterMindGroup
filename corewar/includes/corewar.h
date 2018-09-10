@@ -48,5 +48,8 @@ void	            ft_read_file(t_obj *c, int fdr);
 unsigned char       ft_encode(char *arg);
 int                 ft_alloc_size(char *arg);
 
+void                ft_puthex(int hex, int fd);
+void                ft_write_header(t_obj *c, int fd);
+
 unsigned char       *ft_sti(char *str);
 #endif

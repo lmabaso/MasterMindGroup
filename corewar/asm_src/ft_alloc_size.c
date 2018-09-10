@@ -14,9 +14,9 @@ int     ft_alloc_size(char *arg)
         if (str[i][0] == 'r')
             size += 1;
         else if (str[i][0] == '%')
-            size += 4;
-        else
             size += 2;
+        else
+            size += 4;
         i++;
     }
     return (size);

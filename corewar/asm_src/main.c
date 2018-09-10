@@ -44,49 +44,18 @@ void	ft_free_stuff(t_obj *c)
 	free(c->info);
 }
 
-void	ft_write_name(char str[], int fd)
-{
-	int i;
-
-	i = 0;
-	while (i < PROG_NAME_LENGTH + 6)
-	{
-		ft_putchar_fd(str[i], fd);
-		i++;
-	}
-}
-
-void	ft_write_comment(char str[], int fd)
-{
-	int i;
-
-	i = 0;
-	while (i < COMMENT_LENGTH + 6)
-	{
-		ft_putchar_fd(str[i], fd);
-		i++;
-	}
-}
-
 void				ft_writer(t_obj	*c)
 {
 	int				fdw;
-	// unsigned char	*put;
 	int				i;
+	unsigned char	*put;
 
 	fdw = open("test.cor", O_CREAT | O_WRONLY | O_TRUNC);
-	// put = ft_sti("r1,r1,%:live,%1");
+	put = ft_sti("r1,%:live,%1");
 	i = 0;
 	// ft_puthex(COREWAR_EXEC_MAGIC , fdw);
-	ft_putuchar_fd(0, fdw);
-	ft_puthex(COREWAR_EXEC_MAGIC, fdw);
-	ft_write_name(c->info->prog_name, fdw);
-	ft_write_comment(c->info->comment, fdw);
-	// while (i < ft_alloc_size("r1,r1,%:live,%1") + 2)
-	// {
-	// 	ft_putuchar_fd(put[i], fdw);
-	// 	i++;
-	// }
+	ft_write_header(c, fdw);
+	ft_putustr_fd(put, fdw);
 }
 int		main(int ac, char **av)
 {
@@ -100,10 +69,9 @@ int		main(int ac, char **av)
 	ft_read_file(c, fdr);
 	// print(c->raw);
 	ft_free_stuff(c);
-	// ft_putnbr(ft_alloc_size("2,23,%34"));
 	ft_writer(c);
 	// ft_putstr_fd(ft_strrchr(line, ' ') + 2, fdw);
-	while (1)
-		;
+	// while (1)
+	// 	;
 	return (0);
 }

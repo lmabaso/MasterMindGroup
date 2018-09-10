@@ -9,7 +9,7 @@ SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c f
 	get_next_line.c \
 	ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c ft_lstlen.c ft_lstfree.c \
 	ft_double_ptr_len.c ft_strcontains.c ft_isnumber.c ft_free_2d.c \
-	ft_lstdup.c ft_putuchar_fd.c ft_strucat.c ft_strulen.c\
+	ft_lstdup.c ft_putuchar_fd.c ft_strucat.c ft_strulen.c ft_putustr.c \
 
 OBJ = *.o
 FLAGS= gcc -Wall -Wextra -Werror
