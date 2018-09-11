@@ -105,7 +105,7 @@ void				ft_putendl(char *str);
 void				ft_putnbr_fd(int n, int fd);
 void				ft_putnbr(int n);
 void				ft_putuchar_fd(unsigned char c, int fd);
-void				ft_putustr_fd(unsigned char *str, int fd);
+void				ft_putustr_fd(int size, unsigned char *str, int fd);
 unsigned char		*ft_strucat(unsigned char *s1, const unsigned char *s2);
 size_t				ft_strulen(const unsigned char *s);
 #endif

@@ -3,6 +3,13 @@
 # include "../libft/libft.h"
 # include "op.h"
 
+typedef struct      s_lables
+{
+    char            *lable;
+    unsigned int    addr;
+    struct s_lables *next;
+}                   t_lables;
+
 typedef struct      s_output
 {
     unsigned char   *bytes;
@@ -27,6 +34,7 @@ typedef struct      s_obj
     char            *line;
     char		    *fixinput;
     header_t        *info;
+    t_lables        *lables;
     t_node		    *raw;
     t_data          entry;
 }                   t_obj;
@@ -51,5 +59,5 @@ int                 ft_alloc_size(char *arg);
 void                ft_puthex(int hex, int fd);
 void                ft_write_header(t_obj *c, int fd);
 
-unsigned char       *ft_sti(char *str);
+t_output            ft_sti(char *str);
 #endif

@@ -1,10 +1,13 @@
 #include "libft.h"
 
-void	ft_putustr_fd(unsigned char *str, int fd)
+void	ft_putustr_fd(int size, unsigned char *str, int fd)
 {
-	while (*str)
+	int i;
+
+	i = 0;
+	while (i < size)
 	{
-		ft_putuchar_fd(*str, fd);
-		str++;
+		ft_putuchar_fd(str[i], fd);
+		i++;
 	}
 }
