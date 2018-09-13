@@ -48,14 +48,68 @@ void				ft_writer(t_obj	*c)
 {
 	int				fdw;
 	int				i;
+	int				j;
 	t_output		put;
+	unsigned char	*code;
+	t_node			*tmp;
+	t_output		t;
 
+	tmp = c->raw;
 	fdw = open("test.cor", O_CREAT | O_WRONLY | O_TRUNC);
-	put = ft_sti("r1,%1,1");
+	put = ft_sti("r1,%1,1", c, 0);
 	i = 0;
-	// ft_puthex(COREWAR_EXEC_MAGIC , fdw);
+	code = ft_memalloc(c->info->prog_size);
 	ft_write_header(c, fdw);
-	ft_putustr_fd(put.size, put.bytes, fdw);
+	while (tmp)
+	{
+		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "sti"))
+		{
+			j = 0;
+			t = ft_sti(tmp->entry.data, c, 1);
+			while (j < t.size)
+			{
+				code[i] = t.bytes[j];
+				i++;
+				j++;
+			}
+		}
+			
+		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "live"))
+		{
+			j = 0;
+			t = ft_live(tmp->entry.data, c, 1);
+			while (j < t.size)
+			{
+				code[i] = t.bytes[j];
+				i++;
+				j++;
+			}
+		}
+		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "and"))
+		{
+			j = 0;
+			t =  ft_and(tmp->entry.data, c, 1);
+			while (j < t.size)
+			{
+				code[i] = t.bytes[j];
+				i++;
+				j++;
+			}
+		}
+		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "zjmp"))
+		{
+			j = 0;
+			t =  ft_zjmp(tmp->entry.data, c, 1);
+			while (j < t.size)
+			{
+				code[i] = t.bytes[j];
+				i++;
+				j++;
+			}
+		}
+		tmp = tmp->next;
+	}
+	ft_putustr_fd(c->info->prog_size, code, fdw);
 }
 
 void		ft_append_lable(t_lables** head, char *new_data, unsigned int addr)
@@ -86,18 +140,21 @@ unsigned int ft_get_prog_size(t_obj *c)
 
 	size = 0;
 	tmp = c->raw;
-	c->lables = NULL;
 	while (tmp)
 	{
 		if (tmp->entry.label)
-		{
 			ft_append_lable(&c->lables, tmp->entry.label, size);
-		}
-		ft_putstr(tmp->entry.opcode);
-		ft_putendl(tmp->entry.data);
+		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "sti"))
+			size += ft_sti(tmp->entry.data, c, 0).size;
+		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "live"))
+			size += ft_sti(tmp->entry.data, c, 0).size;
+		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "and"))
+			size += ft_sti(tmp->entry.data, c, 0).size;
+		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "zjmp"))
+			size += ft_sti(tmp->entry.data, c, 0).size;
 		tmp = tmp->next;
 	}
-	return (size);
+	return (size + 1);
 }
 
 int		main(int ac, char **av)
@@ -107,14 +164,15 @@ int		main(int ac, char **av)
 	
 	ft_check_input(ac, av);
 	c = ft_memalloc(sizeof(t_obj));
+	c->lables = NULL;
 	ft_init(c);
 	fdr = open(av[1], O_RDONLY);
 	ft_read_file(c, fdr);
+	c->info->prog_size = ft_get_prog_size(c);
 	// print(c->raw);
+	// ft_writer(c);
+	ft_putnbr(c->info->prog_size);
 	ft_free_stuff(c);
-	ft_writer(c);
-	ft_get_prog_size(c);
-	// ft_putstr_fd(ft_strrchr(line, ' ') + 2, fdw);
 	// while (1)
 	// 	;
 	return (0);

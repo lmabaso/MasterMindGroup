@@ -31,7 +31,7 @@ void	ft_process_input(t_obj *c)
 			c->entry.data = ft_strdup(tmp[2]);
             if (ft_double_ptr_len((void **)tmp) > 2)
             {
-                i = 2;
+                i = 3;
                 while (tmp[i])
                 {
                     hold = c->entry.data;

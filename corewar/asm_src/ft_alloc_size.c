@@ -11,6 +11,7 @@ int     ft_alloc_size(char *arg)
     str = ft_strsplit(arg, ',');
     while (str[i])
     {
+        str[i] = ft_strtrim(str[i]);
         if (str[i][0] == 'r')
             size += 1;
         else if (str[i][0] == '%')
