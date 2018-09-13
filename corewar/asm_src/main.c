@@ -49,14 +49,12 @@ void				ft_writer(t_obj	*c)
 	int				fdw;
 	int				i;
 	int				j;
-	t_output		put;
 	unsigned char	*code;
 	t_node			*tmp;
 	t_output		t;
 
 	tmp = c->raw;
 	fdw = open("test.cor", O_CREAT | O_WRONLY | O_TRUNC);
-	put = ft_sti("r1,%1,1", c, 0);
 	i = 0;
 	code = ft_memalloc(c->info->prog_size);
 	ft_write_header(c, fdw);
@@ -169,8 +167,14 @@ int		main(int ac, char **av)
 	fdr = open(av[1], O_RDONLY);
 	ft_read_file(c, fdr);
 	c->info->prog_size = ft_get_prog_size(c);
+	while (c->lables)
+	{
+		ft_putendl(c->lables->lable);
+		ft_putendl(ft_itoa(c->lables->addr));
+		c->lables = c->lables->next;
+	}
 	// print(c->raw);
-	// ft_writer(c);
+	ft_writer(c);
 	ft_putnbr(c->info->prog_size);
 	ft_free_stuff(c);
 	// while (1)

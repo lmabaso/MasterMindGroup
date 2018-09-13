@@ -16,6 +16,15 @@ unsigned char       *ft_indirect(char *str)
         tmp[2] = i / 255;
         tmp[3] = i % 255;
     }
+    if (ft_isnumber(&str[1]))
+    {
+        i = ft_atoi(&str[1]);
+        ft_putnbr(i);
+        tmp[0] = i / 1024;
+        tmp[1] = i / 512;
+        tmp[2] = i / 255;
+        tmp[3] = i % 255;
+    }
     return (tmp);
 }
 
@@ -56,6 +65,56 @@ unsigned char       *ft_direct(char *str, t_obj *c, int make)
             // tmp[0] = i / 255;
             // tmp[1] = i % 255;
         }
+    }
+    return (tmp);
+}
+
+unsigned char       *ft_manage_arg_e(int size, char *str, t_obj *c, int make)
+{
+    unsigned char   *tmp;
+    unsigned char   *t;
+    char            **s;
+    int             i;
+    int             j;
+    int             a;
+
+    s = ft_strsplit(str, ',');
+    a = 0;
+    i = 0;
+    j = 0;
+    tmp = ft_memalloc(size);
+    while (s[i])
+    {
+        s[i] = ft_strtrim(s[i]);
+        if (s[i][0] == 'r')
+        {
+            tmp[j] = ft_atoi(&s[i][1]);
+            j++;
+        }
+        else if (s[i][0] == DIRECT_CHAR)
+        {
+            ft_putendl(s[i]);
+            t = ft_indirect(s[i]);
+            a = 0;
+            while (a < 4)
+            {
+                tmp[j] = t[a];
+                a++;
+                j++;
+            }
+        }
+        else
+        {
+            a = 0;
+            t = ft_direct(s[i], c, make);
+            while (a < 2)
+            {
+                tmp[j] = t[a];
+                a++;
+                j++;
+            }
+        }
+        i++;
     }
     return (tmp);
 }
@@ -146,11 +205,12 @@ t_output            ft_and(char *str, t_obj *c, int make)
     int             j;
 
     encode = ft_encode(str);
-    size = ft_alloc_size(str);
+    size = ft_alloc_size_e(str);
     code.bytes = ft_memalloc(2 + size);
     code.bytes[0] = 6;
     code.bytes[1] = encode;
-    tmp = ft_manage_arg(size, str, c, make);
+    ft_putendl(ft_itoa(size));
+    tmp = ft_manage_arg_e(size, str, c, make);
     i = 2;
     j = 0;
     while (j < size)
@@ -176,8 +236,25 @@ t_output            ft_live(char *str, t_obj *c, int make)
     size = ft_alloc_size(str);
     code.bytes = ft_memalloc(2 + size);
     code.bytes[0] = 1;
-    code.bytes[1] = encode;
-    tmp = ft_manage_arg(size, str, c, make);
+    tmp = ft_memalloc(IND_CODE + 1);
+    if (ft_isnumber(str))
+    {
+        i = ft_atoi(str);
+        ft_putnbr(i);
+        tmp[0] = i / 1024;
+        tmp[1] = i / 512;
+        tmp[2] = i / 255;
+        tmp[3] = i % 255;
+    }
+    if (ft_isnumber(&str[1]))
+    {
+        i = ft_atoi(&str[1]);
+        ft_putnbr(i);
+        tmp[0] = i / 1024;
+        tmp[1] = i / 512;
+        tmp[2] = i / 255;
+        tmp[3] = i % 255;
+    }
     i = 2;
     j = 0;
     while (j < size)
@@ -186,7 +263,7 @@ t_output            ft_live(char *str, t_obj *c, int make)
         i++;
         j++;
     }
-    code.size = size + 2;
+    code.size = size + 1;
     return (code);
 }
 
@@ -203,7 +280,6 @@ t_output            ft_zjmp(char *str, t_obj *c, int make)
     size = ft_alloc_size(str);
     code.bytes = ft_memalloc(2 + size);
     code.bytes[0] = 1;
-    code.bytes[1] = encode;
     tmp = ft_manage_arg(size, str, c, make);
     i = 2;
     j = 0;
@@ -213,6 +289,6 @@ t_output            ft_zjmp(char *str, t_obj *c, int make)
         i++;
         j++;
     }
-    code.size = size + 2;
+    code.size = size + 1;
     return (code);
 }
