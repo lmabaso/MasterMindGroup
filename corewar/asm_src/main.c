@@ -71,7 +71,6 @@ void				ft_writer(t_obj	*c)
 				j++;
 			}
 		}
-			
 		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "live"))
 		{
 			j = 0;
@@ -98,6 +97,7 @@ void				ft_writer(t_obj	*c)
 		{
 			j = 0;
 			t =  ft_zjmp(tmp->entry.data, c, 1);
+			ft_putnbr(i);
 			while (j < t.size)
 			{
 				code[i] = t.bytes[j];
@@ -141,18 +141,20 @@ unsigned int ft_get_prog_size(t_obj *c)
 	while (tmp)
 	{
 		if (tmp->entry.label)
+		{
 			ft_append_lable(&c->lables, tmp->entry.label, size);
+		}
 		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "sti"))
 			size += ft_sti(tmp->entry.data, c, 0).size;
 		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "live"))
-			size += ft_sti(tmp->entry.data, c, 0).size;
+			size += ft_live(tmp->entry.data, c, 0).size;
 		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "and"))
-			size += ft_sti(tmp->entry.data, c, 0).size;
+			size += ft_and(tmp->entry.data, c, 0).size;
 		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "zjmp"))
-			size += ft_sti(tmp->entry.data, c, 0).size;
+			size += ft_zjmp(tmp->entry.data, c, 0).size;
 		tmp = tmp->next;
 	}
-	return (size + 1);
+	return (size);
 }
 
 int		main(int ac, char **av)
@@ -167,15 +169,9 @@ int		main(int ac, char **av)
 	fdr = open(av[1], O_RDONLY);
 	ft_read_file(c, fdr);
 	c->info->prog_size = ft_get_prog_size(c);
-	while (c->lables)
-	{
-		ft_putendl(c->lables->lable);
-		ft_putendl(ft_itoa(c->lables->addr));
-		c->lables = c->lables->next;
-	}
 	// print(c->raw);
 	ft_writer(c);
-	ft_putnbr(c->info->prog_size);
+	// ft_putnbr(c->info->prog_size);
 	ft_free_stuff(c);
 	// while (1)
 	// 	;

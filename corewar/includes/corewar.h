@@ -54,6 +54,8 @@ void                ft_process_input(t_obj *c);
 void	            ft_read_file(t_obj *c, int fdr);
 
 unsigned char       ft_encode(char *arg);
+unsigned char       ft_encode_e(char *arg);
+
 int                 ft_alloc_size(char *arg);
 int                 ft_alloc_size_e(char *arg);
 
