@@ -65,5 +65,5 @@ void                ft_write_header(t_obj *c, int fd);
 t_output            ft_sti(char *str, t_obj *c, int make);
 t_output            ft_and(char *str, t_obj *c, int make);
 t_output            ft_live(char *str, t_obj *c, int make);
-t_output            ft_zjmp(char *str, t_obj *c, int make);
+t_output            ft_zjmp(char *str, t_obj *c, int make, int pos);
 #endif

@@ -240,18 +240,71 @@ t_output            ft_live(char *str, t_obj *c, int make)
     return (code);
 }
 
-t_output            ft_zjmp(char *str, t_obj *c, int make)
+int binAddition(int a,int b) 
+{
+    int c;
+
+    while (b != 0)
+    {
+        c = (a & b) << 1;
+        a = a ^ b;
+        b = c;
+    }
+    return a; 
+}
+
+int binSubtracton(int a, int b) 
+{
+    int carry;
+
+    b = binAddition(~b, 1);
+    while (b != 0)
+    { 
+        carry = (a & b) << 1;
+        a = a ^ b;
+        b = carry;
+    }
+    return a;
+}
+
+int       ft_d(char *str, t_obj *c, int make)
+{
+    int i;
+    t_lables *t;
+
+    i = 0;
+    if (ft_isnumber(&str[1]))
+        i = ft_atoi(&str[1]);
+    else if (str[1] == LABEL_CHAR)
+    {
+        if (make == 1)
+        {
+            t = find_lable(c->lables, &str[2]);
+            i = t->addr;
+        }
+    }
+    return (i);
+}
+
+t_output            ft_zjmp(char *str, t_obj *c, int make, int pos)
 {
     t_output        code;
     unsigned char   *tmp;
     int             size;
+    int             a;
 
+    
+    (void)pos;
     size = ft_alloc_size(str) + 1;
     code.bytes = ft_memalloc(size);
     code.bytes[0] = 9;
+    a = ft_d(str, c, make);
+    a = 512 + (a - pos);
+    if (make)
+        ft_putnbr(a - pos);
     tmp = ft_direct(str, c, make);
-    code.bytes[1] = tmp[0];
-    code.bytes[2] = tmp[1];
+    code.bytes[1] = a / 256;
+    code.bytes[2] = a % 256;
     code.size = size;
     return (code);
 }

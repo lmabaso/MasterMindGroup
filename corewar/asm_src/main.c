@@ -96,8 +96,7 @@ void				ft_writer(t_obj	*c)
 		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "zjmp"))
 		{
 			j = 0;
-			t =  ft_zjmp(tmp->entry.data, c, 1);
-			ft_putnbr(i);
+			t =  ft_zjmp(tmp->entry.data, c, 1, i);
 			while (j < t.size)
 			{
 				code[i] = t.bytes[j];
@@ -151,7 +150,7 @@ unsigned int ft_get_prog_size(t_obj *c)
 		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "and"))
 			size += ft_and(tmp->entry.data, c, 0).size;
 		if (ft_strequ(ft_strtrim(tmp->entry.opcode), "zjmp"))
-			size += ft_zjmp(tmp->entry.data, c, 0).size;
+			size += ft_zjmp(tmp->entry.data, c, 0, 0).size;
 		tmp = tmp->next;
 	}
 	return (size);
