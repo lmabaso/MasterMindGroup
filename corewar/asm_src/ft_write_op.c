@@ -299,9 +299,7 @@ t_output            ft_zjmp(char *str, t_obj *c, int make, int pos)
     code.bytes = ft_memalloc(size);
     code.bytes[0] = 9;
     a = ft_d(str, c, make);
-    a = 512 + (a - pos);
-    if (make)
-        ft_putnbr(a - pos);
+    a = 65536 + (a - pos);
     tmp = ft_direct(str, c, make);
     code.bytes[1] = a / 256;
     code.bytes[2] = a % 256;
